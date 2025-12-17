@@ -1,0 +1,5 @@
+{
+  "name": "WarpGradient",
+  "description": "A professional pre-warped gradient generator for iOS and Android. Create non-linear gradients with custom Bezier easing and OKLCH interpolation.",
+  "requestFramePermissions": []
+}
