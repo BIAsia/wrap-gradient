@@ -97,10 +97,10 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-12 gap-8">
         
         {/* Left Column: Controls */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="sm:col-span-4 space-y-6">
             
             {/* Curve Editor Card */}
             <div className="bg-white p-5 rounded-xl shadow-sm border border-stone-100">
@@ -161,7 +161,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Right Column: Preview & Output */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="sm:col-span-8 space-y-6">
             
             {/* Preview Section */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
