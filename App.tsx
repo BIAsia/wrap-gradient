@@ -16,8 +16,8 @@ const App: React.FC = () => {
   }); // Ease-in-out default
 
   const [stops, setStops] = useState<ColorStop[]>([
-    { id: '1', color: '#fbbf24', position: 0 },   // Amber-400
-    { id: '2', color: '#78350f', position: 1 }    // Amber-900
+    { id: '1', color: '#fb2380', position: 0 },
+    { id: '2', color: '#28e2fb', position: 1 }
   ]);
 
   const [interpolationMode, setInterpolationMode] = useState<InterpolationMode>(InterpolationMode.OKLCH);
