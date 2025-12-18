@@ -4,7 +4,7 @@ import { ColorStopsEditor } from './components/ColorStopsEditor';
 import { GradientPreview } from './components/GradientPreview';
 import { CodeOutput } from './components/CodeOutput';
 import { BezierCurve, ColorStop, InterpolationMode } from './types';
-import { solveCubicBezier } from './utils/bezier';
+import { solveCubicBezier, generateAdaptiveSamples } from './utils/bezier';
 import { interpolateColor } from './utils/color';
 import { Settings2, Github, Share2 } from 'lucide-react';
 
@@ -54,12 +54,15 @@ const App: React.FC = () => {
        return sortedStops[sortedStops.length-1].color;
     };
 
-    // 3. Generate intermediate stops
+    // 3. Generate intermediate stops with adaptive sampling
     const result: ColorStop[] = [];
     
-    for (let i = 0; i <= samples; i++) {
+    // Get adaptive sample positions based on curve's rate of change
+    const samplePositions = generateAdaptiveSamples(samples, curve.p1, curve.p2);
+    
+    for (let i = 0; i < samplePositions.length; i++) {
         // x is the spatial position in the resulting gradient
-        const x = i / samples;
+        const x = samplePositions[i];
         
         // y is the "time" or "color progression" value derived from the bezier easing
         // solveCubicBezier(x) returns the Y value at X
