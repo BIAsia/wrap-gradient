@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ColorStop } from '../types';
 import { Button } from './ui/Button';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, Download } from 'lucide-react';
+import { parseGradientStops } from '../utils/gradientParser';
 
 interface ColorStopsEditorProps {
   stops: ColorStop[];
@@ -9,6 +10,23 @@ interface ColorStopsEditorProps {
 }
 
 export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({ stops, setStops }) => {
+  const [importError, setImportError] = useState<string | null>(null);
+
+  const handleImport = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const parsed = parseGradientStops(text);
+      
+      if (parsed && parsed.length >= 2) {
+        setStops(parsed);
+        setImportError(null);
+      } else {
+        setImportError('Could not parse gradient from clipboard. Please check the format.');
+      }
+    } catch (error) {
+      setImportError('Failed to read from clipboard. Please grant clipboard permission.');
+    }
+  };
   
   const addStop = () => {
     // Add a new stop between the last two or at the end
@@ -48,12 +66,23 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({ stops, setSt
 
   return (
     <div className="space-y-3">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-2">
         <h3 className="text-sm font-semibold text-stone-900">Key Stops</h3>
-        <Button size="sm" variant="outline" onClick={addStop}>
-            <Plus className="w-4 h-4 mr-1" /> Add Stop
-        </Button>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={handleImport} title="Import from clipboard">
+            <Download className="w-4 h-4 mr-1" /> Import
+          </Button>
+          <Button size="sm" variant="outline" onClick={addStop}>
+            <Plus className="w-4 h-4 mr-1" /> Add
+          </Button>
+        </div>
       </div>
+      
+      {importError && (
+        <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded p-2">
+          {importError}
+        </div>
+      )}
       
       <div className="space-y-2">
         {stops.map((stop, index) => (

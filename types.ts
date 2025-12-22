@@ -26,5 +26,6 @@ export enum ExportFormat {
   SWIFT = 'swift',
   COMPOSE = 'compose',
   ANDROID_XML = 'android_xml',
-  SVG = 'svg'
+  SVG = 'svg',
+  FIGMA = 'figma'
 }

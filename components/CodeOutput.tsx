@@ -84,6 +84,38 @@ ${svgStops}
   </defs>
   <rect width="100%" height="100%" fill="url(#warped-gradient)" />
 </svg>`;
+
+      case ExportFormat.FIGMA:
+        // Figma Scripter code to apply gradient to selected elements
+        const figmaStops = sortedStops.map(s => {
+          const [r, g, b] = hexToRgb(s.color);
+          return `    { position: ${s.position.toFixed(3)}, color: { r: ${r.toFixed(3)}, g: ${g.toFixed(3)}, b: ${b.toFixed(3)}, a: 1 } }`;
+        }).join(',\n');
+        
+        return `// Figma Scripter - Run in Console
+// Select elements in Figma first, then run this code
+const selection = figma.currentPage.selection;
+
+if (selection.length === 0) {
+  console.log("Please select at least one element");
+} else {
+  const gradient = {
+    type: 'GRADIENT_LINEAR',
+    gradientTransform: [[1, 0, 0], [0, 1, 0]],
+    gradientStops: [
+${figmaStops}
+    ]
+  };
+  
+  selection.forEach(function(node) {
+    if ('fills' in node) {
+      node.fills = [gradient];
+      console.log('Applied gradient to: ' + node.name);
+    }
+  });
+  
+  console.log('Gradient applied to ' + selection.length + ' element(s)');
+}`;
         
       default:
         return '';
@@ -102,6 +134,7 @@ ${svgStops}
     { id: ExportFormat.COMPOSE, label: 'Compose' },
     { id: ExportFormat.ANDROID_XML, label: 'Android XML' },
     { id: ExportFormat.SVG, label: 'SVG' },
+    { id: ExportFormat.FIGMA, label: 'Figma' },
   ];
 
   return (
