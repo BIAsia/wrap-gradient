@@ -7,39 +7,37 @@ interface GradientPreviewProps {
 }
 
 export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops, warpedStops }) => {
-  
+
   const getGradientString = (stops: ColorStop[]) => {
-    return `linear-gradient(90deg, ${stops.map(s => `${s.color} ${s.position * 100}%`).join(', ')})`;
+    return `linear-gradient(to top, ${stops.map(s => `${s.color} ${s.position * 100}%`).join(', ')})`;
   };
 
-  const originalGradient = useMemo(() => getGradientString(originalStops), [originalStops]);
-  const warpedGradient = useMemo(() => getGradientString(warpedStops), [warpedStops]);
+  const gradient = useMemo(() => getGradientString(warpedStops), [warpedStops, getGradientString]);
 
+  // Shapes for the preview: Two arches
   return (
-    <div className="space-y-6">
-       <div>
-         <label className="text-xs font-semibold uppercase tracking-wider text-stone-500 mb-2 block">Standard Linear</label>
-         <div className="h-16 w-full rounded-lg border border-stone-200 shadow-sm" style={{ background: originalGradient }} />
-       </div>
-       
-       <div>
-         <label className="text-xs font-semibold uppercase tracking-wider text-stone-500 mb-2 flex justify-between">
-            <span>Pre-warped (Easing Applied)</span>
-            <span className="normal-case font-normal text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-[10px]">{warpedStops.length} stops generated</span>
-         </label>
-         <div className="h-16 w-full rounded-lg border border-stone-200 shadow-sm relative overflow-hidden" style={{ background: warpedGradient }}>
-            {/* Visual indicator of density */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 flex opacity-50">
-                 {warpedStops.map((stop, i) => (
-                     <div 
-                        key={i} 
-                        className="w-px h-full bg-white/50" 
-                        style={{ position: 'absolute', left: `${stop.position * 100}%` }} 
-                     />
-                 ))}
-            </div>
-         </div>
-       </div>
+    <div className="h-full flex flex-col">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-sm text-stone-500 font-medium">Preview</h2>
+        <button className="text-xs text-stone-500 hover:text-white transition-colors">Change</button>
+      </div>
+
+      <div className="flex-1 relative rounded-xl overflow-hidden bg-black flex items-center justify-center p-8 min-h-[300px]">
+        {/* Arches Container */}
+        <div className="flex items-end justify-center gap-0 w-full max-w-md h-full">
+          {/* Left Arch (Lower) */}
+          <div
+            className="w-2/3 h-2/3 rounded-t-full z-10"
+            style={{ background: gradient }}
+          ></div>
+
+          {/* Right Arch (Higher) */}
+          <div
+            className="w-2/3 h-full rounded-t-full -ml-8"
+            style={{ background: gradient }}
+          ></div>
+        </div>
+      </div>
     </div>
   );
 };

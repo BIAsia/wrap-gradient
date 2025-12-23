@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { BezierCurve, Point } from '../types';
 
 interface CurveEditorProps {
@@ -6,23 +6,30 @@ interface CurveEditorProps {
   onChange: (curve: BezierCurve) => void;
 }
 
-const HANDLE_RADIUS = 6;
-const PADDING = 20;
+const PRESETS = [
+  { label: 'Smooth', p1: { x: 0.4, y: 0 }, p2: { x: 0.2, y: 1 } },
+  { label: 'Linear', p1: { x: 0, y: 0 }, p2: { x: 1, y: 1 } },
+  { label: 'Ease in', p1: { x: 0.42, y: 0 }, p2: { x: 1, y: 1 } },
+  { label: 'Ease out', p1: { x: 0, y: 0 }, p2: { x: 0.58, y: 1 } },
+  { label: 'Ease in out', p1: { x: 0.42, y: 0 }, p2: { x: 0.58, y: 1 } },
+];
 
 export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [dragging, setDragging] = useState<'p1' | 'p2' | null>(null);
 
-  // Convert normalized (0-1) to SVG coordinates
-  const toSvg = (p: Point, width: number, height: number) => ({
-    x: PADDING + p.x * (width - PADDING * 2),
-    y: height - (PADDING + p.y * (height - PADDING * 2)), // Invert Y
+  const size = 200;
+  const padding = 20;
+  const graphSize = size - padding * 2;
+
+  const toSvg = (p: Point) => ({
+    x: padding + p.x * graphSize,
+    y: size - (padding + p.y * graphSize)
   });
 
-  // Convert SVG to normalized
-  const fromSvg = (x: number, y: number, width: number, height: number) => ({
-    x: Math.max(0, Math.min(1, (x - PADDING) / (width - PADDING * 2))),
-    y: Math.max(0, Math.min(1, (height - y - PADDING) / (height - PADDING * 2))), // Invert Y back
+  const fromSvg = (x: number, y: number) => ({
+    x: Math.max(0, Math.min(1, (x - padding) / graphSize)),
+    y: Math.max(0, Math.min(1, (size - y - padding) / graphSize))
   });
 
   const handlePointerDown = (point: 'p1' | 'p2') => (e: React.PointerEvent) => {
@@ -34,11 +41,12 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!dragging || !svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    const newPoint = fromSvg(e.clientX - rect.left, e.clientY - rect.top, width, height);
-    
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Slight transform correction if needed, but clientX/Y relative to rect is usually solid
+    const newPoint = fromSvg(x, y);
+
     onChange({
       ...curve,
       [dragging]: newPoint
@@ -50,81 +58,98 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => 
     e.currentTarget.releasePointerCapture(e.pointerId);
   };
 
-  const width = 240;
-  const height = 240;
-  const drawW = width;
-  const drawH = height;
-
-  const p0 = { x: 0, y: 0 };
-  const p3 = { x: 1, y: 1 };
-  
-  const sp0 = toSvg(p0, drawW, drawH);
-  const sp1 = toSvg(curve.p1, drawW, drawH);
-  const sp2 = toSvg(curve.p2, drawW, drawH);
-  const sp3 = toSvg(p3, drawW, drawH);
-
-  const pathD = `M ${sp0.x} ${sp0.y} C ${sp1.x} ${sp1.y}, ${sp2.x} ${sp2.y}, ${sp3.x} ${sp3.y}`;
+  const sp1 = toSvg(curve.p1);
+  const sp2 = toSvg(curve.p2);
+  const start = toSvg({ x: 0, y: 0 });
+  const end = toSvg({ x: 1, y: 1 });
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative bg-white rounded-lg border shadow-sm select-none touch-none" style={{ width, height }}>
-        {/* Grid Background */}
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-            <svg width="100%" height="100%">
-                <defs>
-                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="black" strokeWidth="1"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-sm text-stone-500 font-medium">Mix curve</h2>
+        <span className="text-[10px] text-stone-500 font-mono hidden sm:inline-block">
+          cubic-bezier({curve.p1.x.toFixed(2)}, {curve.p1.y.toFixed(2)}, {curve.p2.x.toFixed(2)}, {curve.p2.y.toFixed(2)})
+        </span>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[220px]">
+        <div className="relative" style={{ width: size, height: size }}>
+          <svg
+            ref={svgRef}
+            width={size}
+            height={size}
+            className="overflow-visible touch-none select-none"
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          >
+            {/* Grid */}
+            <path d={`M ${padding} ${padding} V ${size - padding} H ${size - padding}`}
+              stroke="#333" strokeWidth="1" fill="none" />
+
+            {/* Inner Grid Lines */}
+            {[0, 0.25, 0.5, 0.75, 1].map(t => {
+              const pos = padding + t * graphSize;
+              const yPos = size - (padding + t * graphSize);
+              if (t === 0 || t === 1) return null;
+              return (
+                <g key={t}>
+                  <line x1={pos} y1={padding} x2={pos} y2={size - padding} stroke="#222" strokeWidth="1" />
+                  <line x1={padding} y1={yPos} x2={size - padding} y2={yPos} stroke="#222" strokeWidth="1" />
+                </g>
+              )
+            })}
+
+            {/* Connecting Handles */}
+            <line x1={start.x} y1={start.y} x2={sp1.x} y2={sp1.y} stroke="#444" strokeWidth="1" />
+            <line x1={end.x} y1={end.y} x2={sp2.x} y2={sp2.y} stroke="#444" strokeWidth="1" />
+
+            {/* Curve */}
+            <path
+              d={`M ${start.x} ${start.y} C ${sp1.x} ${sp1.y}, ${sp2.x} ${sp2.y}, ${end.x} ${end.y}`}
+              stroke="white"
+              strokeWidth="2"
+              fill="none"
+            />
+
+            {/* Handle P1 */}
+            <circle
+              cx={sp1.x} cy={sp1.y} r="4"
+              className="fill-black stroke-white stroke-2 cursor-pointer hover:stroke-amber-500 transition-colors"
+              onPointerDown={handlePointerDown('p1')}
+            />
+
+            {/* Handle P2 */}
+            <circle
+              cx={sp2.x} cy={sp2.y} r="4"
+              className="fill-black stroke-white stroke-2 cursor-pointer hover:stroke-amber-500 transition-colors"
+              onPointerDown={handlePointerDown('p2')}
+            />
+
+            {/* Start/End Points */}
+            <circle cx={start.x} cy={start.y} r="3" fill="white" />
+            <circle cx={end.x} cy={end.y} r="3" fill="white" />
+          </svg>
         </div>
 
-        <svg 
-          ref={svgRef}
-          width="100%" 
-          height="100%" 
-          className="overflow-visible"
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        >
-          {/* Connecting Lines */}
-          <line x1={sp0.x} y1={sp0.y} x2={sp1.x} y2={sp1.y} stroke="#e5e5e5" strokeWidth="2" />
-          <line x1={sp3.x} y1={sp3.y} x2={sp2.x} y2={sp2.y} stroke="#e5e5e5" strokeWidth="2" />
-
-          {/* Bezier Curve */}
-          <path d={pathD} fill="none" stroke="currentColor" strokeWidth="3" className="text-stone-900" />
-
-          {/* Handle P1 */}
-          <g transform={`translate(${sp1.x}, ${sp1.y})`} className="cursor-pointer" onPointerDown={handlePointerDown('p1')}>
-             <circle r={HANDLE_RADIUS} className="fill-amber-500 stroke-white stroke-2 shadow-sm transition-transform hover:scale-125" />
-          </g>
-
-          {/* Handle P2 */}
-          <g transform={`translate(${sp2.x}, ${sp2.y})`} className="cursor-pointer" onPointerDown={handlePointerDown('p2')}>
-             <circle r={HANDLE_RADIUS} className="fill-amber-600 stroke-white stroke-2 shadow-sm transition-transform hover:scale-125" />
-          </g>
-          
-          {/* Endpoints */}
-          <circle cx={sp0.x} cy={sp0.y} r="4" className="fill-stone-400" />
-          <circle cx={sp3.x} cy={sp3.y} r="4" className="fill-stone-400" />
-        </svg>
+        <div className="w-full flex justify-center gap-1 mt-6 flex-wrap">
+          {PRESETS.map(preset => (
+            <button
+              key={preset.label}
+              onClick={() => onChange({ p1: preset.p1, p2: preset.p2 })}
+              className={`
+                            px-3 py-1 text-[10px] sm:text-xs rounded-full border transition-all
+                            ${JSON.stringify(curve.p1) === JSON.stringify(preset.p1) && JSON.stringify(curve.p2) === JSON.stringify(preset.p2)
+                  ? 'bg-white text-black border-white font-medium'
+                  : 'bg-transparent text-stone-500 border-stone-800 hover:border-stone-600 hover:text-stone-300'}
+                        `}
+            >
+              {preset.label}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="flex gap-2 mt-4">
-          <PresetButton name="Linear" p1={{x:0, y:0}} p2={{x:1, y:1}} onSelect={onChange} />
-          <PresetButton name="Ease In" p1={{x:0.42, y:0}} p2={{x:1, y:1}} onSelect={onChange} />
-          <PresetButton name="Ease Out" p1={{x:0, y:0}} p2={{x:0.58, y:1}} onSelect={onChange} />
-          <PresetButton name="Ease In Out" p1={{x:0.42, y:0}} p2={{x:0.58, y:1}} onSelect={onChange} />
-      </div>
+
+
     </div>
   );
 };
-
-const PresetButton = ({ name, p1, p2, onSelect }: { name: string, p1: Point, p2: Point, onSelect: (c: BezierCurve) => void }) => (
-    <button 
-        className="px-2 py-1 text-xs font-medium rounded bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
-        onClick={() => onSelect({ p1, p2 })}
-    >
-        {name}
-    </button>
-)

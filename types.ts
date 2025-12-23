@@ -24,6 +24,7 @@ export enum InterpolationMode {
 export enum ExportFormat {
   CSS = 'css',
   SWIFT = 'swift',
+  IOS = 'ios',
   COMPOSE = 'compose',
   ANDROID_XML = 'android_xml',
   SVG = 'svg',
