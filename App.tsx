@@ -10,6 +10,8 @@ import { BezierCurve, ColorStop, InterpolationMode } from './types';
 import { solveCubicBezier, generateAdaptiveSamples } from './utils/bezier';
 import { interpolateColor } from './utils/color';
 
+import { THEME } from './config/theme';
+
 const App: React.FC = () => {
   // --- State ---
   const [curve, setCurve] = useState<BezierCurve>({
@@ -40,13 +42,6 @@ const App: React.FC = () => {
 
   // --- Logic: Generate Warped Stops ---
   const warpedStops = useMemo(() => {
-    // ... (same logic)
-    // To optimize, we won't repeat the loop here, assuming generateAdaptiveSamples logic is solid
-    // but we need to ensure it respects 'samples' state accurately.
-    // In 'utils/bezier.ts', if generateAdaptiveSamples(samples, ...), it should work.
-    // Let's ensure solveCubicBezier and generation is correct.
-
-    // RE-IMPLEMENTING LOGIC HERE FOR CLARITY IN DIFF (Logic remains roughly same)
     const sortedStops = [...stops].sort((a, b) => a.position - b.position);
 
     const getColorAt = (t: number) => {
@@ -65,16 +60,51 @@ const App: React.FC = () => {
       return sortedStops[sortedStops.length - 1].color;
     };
 
+    // Strategy 1: RGB - Just return original stops
+    if (interpolationMode === InterpolationMode.RGB) {
+      return sortedStops;
+    }
+
+    // Strategy 2: OKLAB - Target total counts: Low 4 (min), Default 10 (max), High 16 (max)
+    if (interpolationMode === InterpolationMode.OKLAB) {
+      const n = sortedStops.length;
+      if (n < 2) return sortedStops;
+
+      let interpolationCount = 0;
+      if (samples === 4) {
+        // Low: Min 4 stops total. k = ceil((4-n)/(n-1))
+        interpolationCount = Math.max(0, Math.ceil((4 - n) / (n - 1)));
+      } else {
+        // Default/High: Max 10/16 stops total. k = floor((target-n)/(n-1))
+        const target = samples === 16 ? 16 : 10;
+        interpolationCount = Math.max(0, Math.floor((target - n) / (n - 1)));
+      }
+
+      if (interpolationCount === 0) return sortedStops;
+
+      const result: ColorStop[] = [];
+      for (let i = 0; i < n; i++) {
+        result.push(sortedStops[i]);
+        if (i < n - 1) {
+          const start = sortedStops[i];
+          const end = sortedStops[i + 1];
+          for (let j = 1; j <= interpolationCount; j++) {
+            const t = j / (interpolationCount + 1);
+            const pos = start.position + t * (end.position - start.position);
+            result.push({
+              id: `inter-${start.id}-${end.id}-${j}`,
+              position: pos,
+              color: getColorAt(pos)
+            });
+          }
+        }
+      }
+      return result;
+    }
+
+    // Strategy 3: OKLCH (and others like LCH if added) - Adaptive sampling
     const result: ColorStop[] = [];
-    // If samples == 0, fallback
     const actualSamples = samples || 10;
-
-    // We want exactly 'samples' number of points? Or adaptive?
-    // Design usually implies fixed steps for "Quality".
-    // Let's use linear spacing based on samples count if we want predictable "Default 10, Low 4"
-    // "generateAdaptiveSamples" suggests it distributes points based on curvature.
-    // Ideally we pass 'samples' into it. assuming utils/bezier accepts it.
-
     const positions = generateAdaptiveSamples(actualSamples, curve.p1, curve.p2);
 
     for (const x of positions) {
@@ -89,35 +119,41 @@ const App: React.FC = () => {
     return result;
   }, [stops, curve, interpolationMode, samples]);
 
-  const handlePresetSelect = (start: string, end: string) => {
-    setStops([
-      { id: Math.random().toString(), position: 0, color: start },
-      { id: Math.random().toString(), position: 1, color: end }
-    ]);
+  const handlePresetSelect = (newStops: ColorStop[], mode?: InterpolationMode) => {
+    setStops(newStops);
+    if (mode === InterpolationMode.OKLAB) {
+      setInterpolationMode(mode);
+      setCurve({ p1: { x: 0, y: 0 }, p2: { x: 1, y: 1 } });
+    } else if (mode === InterpolationMode.OKLCH) {
+      setInterpolationMode(mode);
+      setCurve({ p1: { x: 0.42, y: 0 }, p2: { x: 1, y: 1 } });
+    } else if (mode) {
+      setInterpolationMode(mode);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-stone-800 selection:text-white flex flex-col overflow-hidden transition-colors duration-300">
+    <div className={`min-h-screen ${THEME.typography.color.primary} font-sans selection:bg-stone-800 selection:text-white flex flex-col overflow-hidden ${THEME.animation.transition} ${THEME.animation.duration} bg-background`}>
       <Header />
 
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border border-border min-h-0">
+      <main className={`flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x ${THEME.layout.divide} ${THEME.layout.border} border-t min-h-0`}>
 
         {/* Column 1: Preview & Presets */}
         <div className="flex flex-col min-h-0">
-          <div className="h-1/2 p-6 border-b border-border">
+          <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
             <GradientPreview originalStops={stops} warpedStops={warpedStops} />
           </div>
-          <div className="h-1/2 p-6">
+          <div className={`h-1/2 ${THEME.layout.padding.standard}`}>
             <Presets onSelect={handlePresetSelect} />
           </div>
         </div>
 
         {/* Column 2: Curve & Stops */}
         <div className="flex flex-col min-h-0">
-          <div className="h-1/2 p-6 border-b border-border">
+          <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
             <CurveEditor curve={curve} onChange={setCurve} />
           </div>
-          <div className="h-1/2 p-6 overflow-hidden">
+          <div className={`h-1/2 ${THEME.layout.padding.standard} overflow-hidden`}>
             <ColorStopsEditor
               stops={stops}
               setStops={setStops}
@@ -132,10 +168,10 @@ const App: React.FC = () => {
 
         {/* Column 3: Info & Export */}
         <div className="flex flex-col min-h-0">
-          <div className="h-[40%] p-6 border-b border-border flex items-center justify-center">
+          <div className={`h-[40%] ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder} flex items-center justify-center`}>
             <InfoPanel stops={warpedStops} />
           </div>
-          <div className="h-[60%] p-4 lg:p-6">
+          <div className={`h-[60%] ${THEME.layout.padding.compact} sm:${THEME.layout.padding.standard}`}>
             <CodeOutput stops={warpedStops} />
           </div>
         </div>

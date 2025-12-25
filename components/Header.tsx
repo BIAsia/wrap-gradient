@@ -6,21 +6,23 @@ interface HeaderProps {
   onToggleTheme: () => void;
 }
 
+import { THEME } from '../config/theme';
+
 export const Header: React.FC = () => {
   return (
-    <header className="flex h-14 items-center justify-between px-6 border-b border-border bg-background transition-colors duration-300">
+    <header className={`flex ${THEME.layout.headerHeight} items-center justify-between px-4 border-b ${THEME.layout.border} bg-background ${THEME.animation.transition} ${THEME.animation.duration}`}>
       <div className="flex items-center gap-2">
-        <h1 className="text-sm font-medium text-foreground">Gradient-Box</h1>
-        <span className="text-xs text-muted-foreground hidden sm:inline-block">Pre-wrapped advanced gradients for production</span>
+        <h1 className={`text-sm font-medium ${THEME.typography.color.primary}`}>Gradient-Box</h1>
+        <span className={`${THEME.typography.size.xs} ${THEME.typography.color.secondary} hidden sm:inline-block`}>Pre-wrapped advanced gradients for production</span>
       </div>
-      <nav className="flex items-center gap-6 text-sm text-muted-foreground">
+      <nav className={`flex items-center gap-6 text-sm ${THEME.typography.color.secondary}`}>
         <div className="flex items-center gap-1 cursor-not-allowed opacity-50">
-          <span className="text-foreground">Light</span>
+          <span className={THEME.typography.color.primary}>Light</span>
           <span>/</span>
           <span>Dark</span>
         </div>
-        <a href="#" className="hover:text-foreground transition-colors">About</a>
-        <a href="#" className="flex items-center gap-1 hover:text-foreground transition-colors">
+        <a href="#" className={`hover:${THEME.typography.color.primary} ${THEME.animation.transition}`}>About</a>
+        <a href="#" className={`flex items-center gap-1 hover:${THEME.typography.color.primary} ${THEME.animation.transition}`}>
           Github <ExternalLink className="w-3 h-3" />
         </a>
       </nav>

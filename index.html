@@ -1,112 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WarpGradient</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              border: "hsl(var(--border))",
-              input: "hsl(var(--input))",
-              ring: "hsl(var(--ring))",
-              background: "hsl(var(--background))",
-              foreground: "hsl(var(--foreground))",
-              primary: {
-                DEFAULT: "hsl(var(--primary))",
-                foreground: "hsl(var(--primary-foreground))",
-              },
-              secondary: {
-                DEFAULT: "hsl(var(--secondary))",
-                foreground: "hsl(var(--secondary-foreground))",
-              },
-              destructive: {
-                DEFAULT: "hsl(var(--destructive))",
-                foreground: "hsl(var(--destructive-foreground))",
-              },
-              muted: {
-                DEFAULT: "hsl(var(--muted))",
-                foreground: "hsl(var(--muted-foreground))",
-              },
-              accent: {
-                DEFAULT: "hsl(var(--accent))",
-                foreground: "hsl(var(--accent-foreground))",
-              },
-              popover: {
-                DEFAULT: "hsl(var(--popover))",
-                foreground: "hsl(var(--popover-foreground))",
-              },
-              card: {
-                DEFAULT: "hsl(var(--card))",
-                foreground: "hsl(var(--card-foreground))",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WarpGradient</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
             },
-            borderRadius: {
-              lg: "var(--radius)",
-              md: "calc(var(--radius) - 2px)",
-              sm: "calc(var(--radius) - 4px)",
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
             },
-            fontFamily: {
-              sans: ["TikTok Sans", "Inter", "system-ui", "sans-serif"],
+            destructive: {
+              DEFAULT: "hsl(var(--destructive))",
+              foreground: "hsl(var(--destructive-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            accent: {
+              DEFAULT: "hsl(var(--accent))",
+              foreground: "hsl(var(--accent-foreground))",
+            },
+            popover: {
+              DEFAULT: "hsl(var(--popover))",
+              foreground: "hsl(var(--popover-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
             },
           },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          },
+          fontFamily: {
+            sans: ["TikTok Sans", "Inter", "system-ui", "sans-serif"],
+          },
         },
-      }
-    </script>
-    <style>
-      /* Fallback imports if TikTok Sans isn't local */
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      },
+    }
+  </script>
+  <style>
+    /* Fallback imports if TikTok Sans isn't local */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-      :root {
-        /* Default to Dark Mode Variables */
-        --background: 0 0% 0%; /* Black */
-        --foreground: 0 0% 100%; /* White */
-        
-        --card: 0 0% 3%; /* Very dark gray */
-        --card-foreground: 0 0% 100%;
-        
-        --popover: 0 0% 3%;
-        --popover-foreground: 0 0% 100%;
-        
-        --primary: 0 0% 100%;
-        --primary-foreground: 0 0% 0%;
-        
-        --secondary: 0 0% 9%; /* Zinc 900ish */
-        --secondary-foreground: 0 0% 100%;
-        
-        --muted: 0 0% 9%;
-        --muted-foreground: 0 0% 63.9%;
-        
-        --accent: 0 0% 9%;
-        --accent-foreground: 0 0% 100%;
-        
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 100%;
+    :root {
+      /* Default to Dark Mode Variables */
+      --background: 0 0% 0%;
+      /* Black */
+      --foreground: 0 0% 100%;
+      /* White */
 
-        --border: 0 0% 14.9%; /* Zinc 800 */
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        
-        --radius: 0.75rem; /* 12px */
-      }
-      
-      body {
-        background-color: hsl(var(--background));
-        color: hsl(var(--foreground));
-      }
-      
-      /* Replicate the thick tracks and thumb styles for ranges if needed globally */
-      input[type=range] {
-        @apply outline-none focus:outline-none;
-      }
-    </style>
-  </head>
-  <body class="antialiased font-sans selection:bg-white/20">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+      --card: 0 0% 3%;
+      /* Very dark gray */
+      --card-foreground: 0 0% 100%;
+
+      --popover: 0 0% 3%;
+      --popover-foreground: 0 0% 100%;
+
+      --primary: 0 0% 100%;
+      --primary-foreground: 0 0% 0%;
+
+      --secondary: 0 0% 9%;
+      /* Zinc 900ish */
+      --secondary-foreground: 0 0% 100%;
+
+      --muted: 0 0% 9%;
+      --muted-foreground: 0 0% 63.9%;
+
+      --accent: 0 0% 9%;
+      --accent-foreground: 0 0% 100%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 100%;
+
+      --border: 0 0% 14.9%;
+      /* Zinc 800 */
+      --input: 0 0% 14.9%;
+      --ring: 0 0% 83.1%;
+
+      --radius: 0.75rem;
+      /* 12px */
+    }
+
+    body {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+    }
+
+    /* Replicate the thick tracks and thumb styles for ranges if needed globally */
+    input[type=range] {
+      @apply outline-none focus:outline-none;
+    }
+  </style>
+</head>
+
+<body class="antialiased font-sans selection:bg-white/20">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>

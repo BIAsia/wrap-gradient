@@ -1,0 +1,1411 @@
+{
+  "version": "1.0",
+  "records": [
+    {
+      "name": "RedYellow/Burning Sky 烈空",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.768627,
+              "green": 0.768627,
+              "blue": 0.768627
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.894118,
+              "green": 0.552941,
+              "blue": 0.243137
+            },
+            "location": 0.182692
+          },
+          {
+            "colorData": {
+              "red": 0.87451,
+              "green": 0.145098,
+              "blue": 0.047059
+            },
+            "location": 0.408654
+          },
+          {
+            "colorData": {
+              "red": 0.121569,
+              "green": 0.062745,
+              "blue": 0.05098
+            },
+            "location": 0.865385
+          },
+          {
+            "colorData": {
+              "red": 0,
+              "green": 0,
+              "blue": 0
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedYellow/Dyed Horizon 霞染",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.866667,
+              "green": 0.87451,
+              "blue": 0.933333
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.87451,
+              "green": 0.792157,
+              "blue": 0.678431
+            },
+            "location": 0.264423
+          },
+          {
+            "colorData": {
+              "red": 0.972549,
+              "green": 0.643137,
+              "blue": 0.643137
+            },
+            "location": 0.524038
+          },
+          {
+            "colorData": {
+              "red": 0.945098,
+              "green": 0.376471,
+              "blue": 0.254902
+            },
+            "location": 0.841346
+          },
+          {
+            "colorData": {
+              "red": 0.937255,
+              "green": 0.184314,
+              "blue": 0.415686
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedYellow/Peach Aura 桃霓",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.560784,
+              "green": 0.8,
+              "blue": 0.803922
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.858824,
+              "green": 0.831373,
+              "blue": 0.807843
+            },
+            "location": 0.0001
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.454902,
+              "blue": 0.705882
+            },
+            "location": 0.543269
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.258824,
+              "blue": 0.039216
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedYellow/Peach Drop 桃露",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.726964,
+              "green": 0.924422,
+              "blue": 0.927659
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.454902,
+              "blue": 0.705882
+            },
+            "location": 0.783654
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.258824,
+              "blue": 0.039216
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedYellow/Warm Glow 晨曦",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.909804,
+              "green": 0.8,
+              "blue": 0.686275
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.972549,
+              "green": 0.658824,
+              "blue": 0.031373
+            },
+            "location": 0.370192
+          },
+          {
+            "colorData": {
+              "red": 0.972549,
+              "green": 0.533333,
+              "blue": 0.627451
+            },
+            "location": 0.721154
+          },
+          {
+            "colorData": {
+              "red": 0.960784,
+              "green": 0.596078,
+              "blue": 0.643137
+            },
+            "location": 0.995192
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedYellow/Sunset Glow 夕霞",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.713726,
+              "green": 0.827451,
+              "blue": 0.937255
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.909804,
+              "green": 0.8,
+              "blue": 0.686275
+            },
+            "location": 0.399038
+          },
+          {
+            "colorData": {
+              "red": 0.941176,
+              "green": 0.564706,
+              "blue": 0.313726
+            },
+            "location": 0.625
+          },
+          {
+            "colorData": {
+              "red": 0.972549,
+              "green": 0.533333,
+              "blue": 0.627451
+            },
+            "location": 0.903846
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Awakening 初醒",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.787381,
+              "green": 0.90933,
+              "blue": 0.805673
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.374908,
+              "green": 0.676314,
+              "blue": 0.833045
+            },
+            "location": 0.235577
+          },
+          {
+            "colorData": {
+              "red": 0.278431,
+              "green": 0.376471,
+              "blue": 0.631373
+            },
+            "location": 0.524038
+          },
+          {
+            "colorData": {
+              "red": 0.121569,
+              "green": 0.062745,
+              "blue": 0.05098
+            },
+            "location": 0.995192
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Glacial Glow 冰川",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.00671,
+              "green": 0.048362,
+              "blue": 0.099271
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.146532,
+              "green": 0.222405,
+              "blue": 0.601769
+            },
+            "location": 0.331731
+          },
+          {
+            "colorData": {
+              "red": 0,
+              "green": 0.482353,
+              "blue": 0.862745
+            },
+            "location": 0.591346
+          },
+          {
+            "colorData": {
+              "red": 0.700712,
+              "green": 0.600275,
+              "blue": 0.954759
+            },
+            "location": 0.860577
+          },
+          {
+            "colorData": {
+              "red": 0.920955,
+              "green": 0.803656,
+              "blue": 0.805611
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Frost Dawn 霜降",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.866667,
+              "green": 0.87451,
+              "blue": 0.933333
+            },
+            "location": 0.004808
+          },
+          {
+            "colorData": {
+              "red": 0.854902,
+              "green": 0.631373,
+              "blue": 0.686275
+            },
+            "location": 0.423077
+          },
+          {
+            "colorData": {
+              "red": 0.333333,
+              "green": 0.447059,
+              "blue": 0.713726
+            },
+            "location": 0.798077
+          },
+          {
+            "colorData": {
+              "red": 0.486275,
+              "green": 0.384314,
+              "blue": 0.647059
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Stellar 星幕",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.964706,
+              "green": 0.815686,
+              "blue": 0.858824
+            },
+            "location": 0.081731
+          },
+          {
+            "colorData": {
+              "red": 0.023529,
+              "green": 0.27451,
+              "blue": 0.807843
+            },
+            "location": 0.625
+          },
+          {
+            "colorData": {
+              "red": 0.094118,
+              "green": 0.176471,
+              "blue": 0.486275
+            },
+            "location": 0.769231
+          },
+          {
+            "colorData": {
+              "red": 0.156863,
+              "green": 0.090196,
+              "blue": 0.231373
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Dream Haze 梦霭",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.921569,
+              "green": 0.835294,
+              "blue": 0.921569
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.631373,
+              "green": 0.745098,
+              "blue": 0.909804
+            },
+            "location": 0.471154
+          },
+          {
+            "colorData": {
+              "red": 0.501961,
+              "green": 0.482353,
+              "blue": 0.792157
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "BluePurple/Twilight Sky 夜阑",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.890196,
+              "green": 0.8,
+              "blue": 0.901961
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.305882,
+              "green": 0.54902,
+              "blue": 0.835294
+            },
+            "location": 0.350962
+          },
+          {
+            "colorData": {
+              "red": 0.376471,
+              "green": 0.407843,
+              "blue": 0.760784
+            },
+            "location": 0.644231
+          },
+          {
+            "colorData": {
+              "red": 0.219608,
+              "green": 0.211765,
+              "blue": 0.305882
+            },
+            "location": 0.995192
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Tranquil Bay 海湾",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.858824,
+              "green": 0.890196,
+              "blue": 0.815686
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.552941,
+              "green": 0.721569,
+              "blue": 0.654902
+            },
+            "location": 0.230769
+          },
+          {
+            "colorData": {
+              "red": 0.176471,
+              "green": 0.556863,
+              "blue": 0.603922
+            },
+            "location": 0.418269
+          },
+          {
+            "colorData": {
+              "red": 0.027451,
+              "green": 0.392157,
+              "blue": 0.572549
+            },
+            "location": 0.586538
+          },
+          {
+            "colorData": {
+              "red": 0.082353,
+              "green": 0.260784,
+              "blue": 0.533333
+            },
+            "location": 0.788462
+          },
+          {
+            "colorData": {
+              "red": 0.14902,
+              "green": 0.172549,
+              "blue": 0.505882
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Mint Sugar 薄荷糖",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.870588,
+              "green": 0.807843,
+              "blue": 0.909804
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.796078,
+              "green": 0.729412,
+              "blue": 0.933333
+            },
+            "location": 0.206731
+          },
+          {
+            "colorData": {
+              "red": 0.490196,
+              "green": 0.752941,
+              "blue": 0.984314
+            },
+            "location": 0.461538
+          },
+          {
+            "colorData": {
+              "red": 0,
+              "green": 0.780392,
+              "blue": 0.65098
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Lakeside Glow 湖光",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.936467,
+              "green": 0.930376,
+              "blue": 0.677606
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.654902,
+              "green": 0.882353,
+              "blue": 0.654902
+            },
+            "location": 0.269231
+          },
+          {
+            "colorData": {
+              "red": 0.219608,
+              "green": 0.596078,
+              "blue": 0.937255
+            },
+            "location": 0.831731
+          },
+          {
+            "colorData": {
+              "red": 0.066667,
+              "green": 0.603922,
+              "blue": 0.721569
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Spring Sky 晴空",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.968627,
+              "green": 0.835294,
+              "blue": 0.772549
+            },
+            "location": 0.072115
+          },
+          {
+            "colorData": {
+              "red": 0.27451,
+              "green": 0.658824,
+              "blue": 0.752941
+            },
+            "location": 0.576923
+          },
+          {
+            "colorData": {
+              "red": 0.262745,
+              "green": 0.682353,
+              "blue": 0.490196
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Meadow 原野",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.984314,
+              "green": 0.839216,
+              "blue": 0.760784
+            },
+            "location": 0.09
+          },
+          {
+            "colorData": {
+              "red": 0.482353,
+              "green": 0.768627,
+              "blue": 0.290196
+            },
+            "location": 0.745192
+          },
+          {
+            "colorData": {
+              "red": 0.737255,
+              "green": 0.717647,
+              "blue": 0.031373
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "GreenYellow/Spring Days 春日",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.929412,
+              "green": 0.807843,
+              "blue": 0.827451
+            },
+            "location": 0.081731
+          },
+          {
+            "colorData": {
+              "red": 0.563258,
+              "green": 0.837121,
+              "blue": 0.750397
+            },
+            "location": 0.399038
+          },
+          {
+            "colorData": {
+              "red": 0.203922,
+              "green": 0.788235,
+              "blue": 0.619608
+            },
+            "location": 0.649038
+          },
+          {
+            "colorData": {
+              "red": 0.663203,
+              "green": 0.74902,
+              "blue": 0.352941
+            },
+            "location": 0.903846
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Floral 花漾",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.788235,
+              "green": 0.858824,
+              "blue": 0.470588
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.980392,
+              "green": 0.717647,
+              "blue": 0.376471
+            },
+            "location": 0.456731
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.576471,
+              "blue": 0.639216
+            },
+            "location": 0.831731
+          },
+          {
+            "colorData": {
+              "red": 0.933333,
+              "green": 0.556863,
+              "blue": 0.796078
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Glacial Glow 彩云",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.835294,
+              "blue": 0.576471
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.705882,
+              "blue": 0.545098
+            },
+            "location": 0.326923
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.572549,
+              "blue": 0.87451
+            },
+            "location": 0.644231
+          },
+          {
+            "colorData": {
+              "red": 0.596078,
+              "green": 0.607843,
+              "blue": 1
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Waltz 华尔兹",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.956863,
+              "green": 0.694118,
+              "blue": 0.658824
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.890196,
+              "green": 0.403922,
+              "blue": 0.529412
+            },
+            "location": 0.264423
+          },
+          {
+            "colorData": {
+              "red": 0.47451,
+              "green": 0.078431,
+              "blue": 0.87451
+            },
+            "location": 0.663462
+          },
+          {
+            "colorData": {
+              "red": 0.133116,
+              "green": 0.035609,
+              "blue": 0.653151
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Midnight Bourbon 午夜波本",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.94902,
+              "green": 0.517647,
+              "blue": 0.427451
+            },
+            "location": 0.120192
+          },
+          {
+            "colorData": {
+              "red": 0.839216,
+              "green": 0.415686,
+              "blue": 0.643137
+            },
+            "location": 0.254808
+          },
+          {
+            "colorData": {
+              "red": 0.121569,
+              "green": 0.247059,
+              "blue": 0.807843
+            },
+            "location": 0.605769
+          },
+          {
+            "colorData": {
+              "red": 0.062745,
+              "green": 0.101961,
+              "blue": 0.486275
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Amber Mist 雾色暖阳",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.878549,
+              "green": 0.658912,
+              "blue": 0
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 1,
+              "green": 0.486057,
+              "blue": 0.358567
+            },
+            "location": 0.75
+          },
+          {
+            "colorData": {
+              "red": 0.878431,
+              "green": 0.556863,
+              "blue": 0.505882
+            },
+            "location": 0.860577
+          },
+          {
+            "colorData": {
+              "red": 0.568627,
+              "green": 0.668889,
+              "blue": 0.8
+            },
+            "location": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Contrast/Mint Blossom 樱草",
+      "gradient": {
+        "stops": [
+          {
+            "colorData": {
+              "red": 0.752941,
+              "green": 0.835294,
+              "blue": 0.537255
+            },
+            "location": 0
+          },
+          {
+            "colorData": {
+              "red": 0.670588,
+              "green": 0.752941,
+              "blue": 0.772549
+            },
+            "location": 0.264423
+          },
+          {
+            "colorData": {
+              "red": 0.933333,
+              "green": 0.564706,
+              "blue": 0.8
+            },
+            "location": 0.754808
+          }
+        ]
+      }
+    },
+    {
+  "name": "Dark/Champagne 古典香槟",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.81,
+          "green": 0.9,
+          "blue": 0.72
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.69,
+          "green": 0.47,
+          "blue": 0.25
+        },
+        "location": 0.40
+      },
+      {
+        "colorData": {
+          "red": 0.59,
+          "green": 0.35,
+          "blue": 0.09
+        },
+        "location": 0.53
+      },
+      {
+        "colorData": {
+          "red": 0.22,
+          "green": 0.22,
+          "blue": 0.2
+        },
+        "location": 0.75
+      },
+      {
+        "colorData": {
+          "red": 0,
+          "green": 0.18,
+          "blue": 0.22
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Dark/Dusky Horizon 暮色线",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.95,
+          "green": 0.78,
+          "blue": 0.92
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.31,
+          "green": 0.44,
+          "blue": 0.71
+        },
+        "location": 0.50
+      },
+      {
+        "colorData": {
+          "red": 0.24,
+          "green": 0.36,
+          "blue": 0.58
+        },
+        "location": 0.59
+      },
+      {
+        "colorData": {
+          "red": 0.21,
+          "green": 0.24,
+          "blue": 0.31
+        },
+        "location": 0.75
+      },
+      {
+        "colorData": {
+          "red": 0.25,
+          "green": 0.13,
+          "blue": 0.02
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Dark/Phantom 魅影",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.77,
+          "green": 0.33,
+          "blue": 0.1
+        },
+        "location": 0.07
+      },
+      {
+        "colorData": {
+          "red": 0.66,
+          "green": 0.26,
+          "blue": 0.37
+        },
+        "location": 0.24
+      },
+      {
+        "colorData": {
+          "red": 0.45,
+          "green": 0.13,
+          "blue": 0.56
+        },
+        "location": 0.43
+      },
+      {
+        "colorData": {
+          "red": 0.25,
+          "green": 0.04,
+          "blue": 0.46
+        },
+        "location": 0.58
+      },
+      {
+        "colorData": {
+          "red": 0.14,
+          "green": 0.03,
+          "blue": 0.27
+        },
+        "location": 0.77
+      },
+      {
+        "colorData": {
+          "red": 0.01,
+          "green": 0.01,
+          "blue": 0
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Dark/Jungle 丛林",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.69,
+          "green": 0.6,
+          "blue": 0.11
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.45,
+          "green": 0.59,
+          "blue": 0.26
+        },
+        "location": 0.35
+      },
+      {
+        "colorData": {
+          "red": 0.29,
+          "green": 0.53,
+          "blue": 0.29
+        },
+        "location": 0.49
+      },
+      {
+        "colorData": {
+          "red": 0.06,
+          "green": 0.34,
+          "blue": 0.3
+        },
+        "location": 0.69
+      },
+      {
+        "colorData": {
+          "red": 0.03,
+          "green": 0.01,
+          "blue": 0
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Dark/Fading Night 渐明",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.87,
+          "green": 0.77,
+          "blue": 0.82
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.53,
+          "green": 0.55,
+          "blue": 0.72
+        },
+        "location": 0.23
+      },
+      {
+        "colorData": {
+          "red": 0.13,
+          "green": 0.36,
+          "blue": 0.5
+        },
+        "location": 0.50
+      },
+      {
+        "colorData": {
+          "red": 0.24,
+          "green": 0.21,
+          "blue": 0.36
+        },
+        "location": 0.72
+      },
+      {
+        "colorData": {
+          "red": 0.13,
+          "green": 0.06,
+          "blue": 0.09
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Light/Soft Bubble 泡沫",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.96,
+          "green": 0.92,
+          "blue": 0.85
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.95,
+          "green": 0.83,
+          "blue": 0.86
+        },
+        "location": 0.31
+      },
+      {
+        "colorData": {
+          "red": 0.92,
+          "green": 0.74,
+          "blue": 0.87
+        },
+        "location": 0.50
+      },
+      {
+        "colorData": {
+          "red": 0.8,
+          "green": 0.73,
+          "blue": 0.89
+        },
+        "location": 0.65
+      },
+      {
+        "colorData": {
+          "red": 0.55,
+          "green": 0.75,
+          "blue": 0.94
+        },
+        "location": 0.82
+      },
+      {
+        "colorData": {
+          "red": 0.47,
+          "green": 0.69,
+          "blue": 1
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Light/Tonic 汤力水",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.89,
+          "green": 0.93,
+          "blue": 0.94
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.91,
+          "green": 0.92,
+          "blue": 0.72
+        },
+        "location": 0.27
+      },
+      {
+        "colorData": {
+          "red": 0.94,
+          "green": 0.87,
+          "blue": 0.64
+        },
+        "location": 0.43
+      },
+      {
+        "colorData": {
+          "red": 0.91,
+          "green": 0.69,
+          "blue": 0.47
+        },
+        "location": 0.75
+      },
+      {
+        "colorData": {
+          "red": 0.95,
+          "green": 0.59,
+          "blue": 0.51
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Light/Peach 水蜜桃",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.85,
+          "green": 0.96,
+          "blue": 0.98
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.99,
+          "green": 0.85,
+          "blue": 0.84
+        },
+        "location": 0.31
+      },
+      {
+        "colorData": {
+          "red": 0.99,
+          "green": 0.73,
+          "blue": 0.79
+        },
+        "location": 0.61
+      },
+      {
+        "colorData": {
+          "red": 0.94,
+          "green": 0.7,
+          "blue": 0.96
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Light/Tangerine Sparkle 青桔气泡",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 0.95,
+          "green": 0.95,
+          "blue": 0.9
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.96,
+          "green": 0.96,
+          "blue": 0.8
+        },
+        "location": 0.31
+      },
+      {
+        "colorData": {
+          "red": 0.82,
+          "green": 0.95,
+          "blue": 0.79
+        },
+        "location": 0.64
+      },
+      {
+        "colorData": {
+          "red": 0.4,
+          "green": 0.96,
+          "blue": 0.76
+        },
+        "location": 1.00
+      }
+    ]
+  }
+},
+{
+  "name": "Light/Sun Flower 向阳",
+  "gradient": {
+    "stops": [
+      {
+        "colorData": {
+          "red": 1,
+          "green": 0.85,
+          "blue": 0.76
+        },
+        "location": 0
+      },
+      {
+        "colorData": {
+          "red": 0.96,
+          "green": 0.78,
+          "blue": 0.77
+        },
+        "location": 0.22
+      },
+      {
+        "colorData": {
+          "red": 0.82,
+          "green": 0.73,
+          "blue": 0.89
+        },
+        "location": 0.50
+      },
+      {
+        "colorData": {
+          "red": 0.76,
+          "green": 0.72,
+          "blue": 0.94
+        },
+        "location": 0.80
+      },
+      {
+        "colorData": {
+          "red": 0.84,
+          "green": 0.65,
+          "blue": 0.94
+        },
+        "location": 1.00
+      }
+    ]
+  }
+}
+  ]
+}

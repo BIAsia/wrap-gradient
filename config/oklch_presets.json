@@ -1,0 +1,160 @@
+{
+    "records": [
+        {
+            "stops": [
+                {
+                    "color": "#CCE31C",
+                    "position": 0
+                },
+                {
+                    "color": "#FB2883",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#66FFF5",
+                    "position": 0
+                },
+                {
+                    "color": "#FF1A75",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#66FFE6",
+                    "position": 0
+                },
+                {
+                    "color": "#FF1A75",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#66FFE6",
+                    "position": 0
+                },
+                {
+                    "color": "#FF9838",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#6685FF",
+                    "position": 0
+                },
+                {
+                    "color": "#FF9838",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#BA66FF",
+                    "position": 0
+                },
+                {
+                    "color": "#FCFF57",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#FF66E3",
+                    "position": 0
+                },
+                {
+                    "color": "#A5FF99",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#FFB866",
+                    "position": 0
+                },
+                {
+                    "color": "#99CAFF",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#AB66FF",
+                    "position": 0
+                },
+                {
+                    "color": "#8AFFB3",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#FFD9C2",
+                    "position": 0
+                },
+                {
+                    "color": "#D6A6F0",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#C3FFC2",
+                    "position": 0
+                },
+                {
+                    "color": "#F0B3F5",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#DECEE8",
+                    "position": 0
+                },
+                {
+                    "color": "#00C7A6",
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "stops": [
+                {
+                    "color": "#DBE3D0",
+                    "position": 0
+                },
+                {
+                    "color": "#262C81",
+                    "position": 1
+                }
+            ]
+        }
+    ]
+}
