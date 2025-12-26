@@ -97,32 +97,32 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
     <div className="flex flex-col h-full">
       <div className={`flex items-center justify-between mb-2`}>
         <h2 className={`${THEME.panel.header.title} ${THEME.typography.color.label}`}>Key stops</h2>
-        <button className={`${THEME.typography.size.xs} ${THEME.typography.color.label} hover:${THEME.typography.color.accent} transition-colors cursor-not-allowed opacity-50`}>Import from pasteboard</button>
+        <button className={`${THEME.typography.size.xs} ${THEME.typography.color.label} hover:${THEME.typography.color.primary} transition-colors cursor-not-allowed opacity-50`}>Import from pasteboard</button>
       </div>
 
       {/* Interpolation Mode Selector */}
       <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center bg-stone-900 rounded-full p-0.5 border border-stone-800">
+        <div className="flex items-center bg-muted rounded-full p-0.5 border border-border">
           {[InterpolationMode.OKLCH, InterpolationMode.OKLAB, InterpolationMode.RGB].map(mode => (
             <button
               key={mode}
               onClick={() => setInterpolationMode(mode)}
               className={`px-3 py-1 text-[10px] font-medium rounded-full transition-colors uppercase
-                            ${interpolationMode === mode ? 'bg-white text-black' : 'text-stone-500 hover:text-stone-300'}`}
+                            ${interpolationMode === mode ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >
               {mode === 'lch' ? 'LCH' : mode}
             </button>
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-stone-500">Quality</span>
+          <span className="text-xs text-muted-foreground">Quality</span>
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => interpolationMode !== InterpolationMode.RGB && setIsQualityOpen(!isQualityOpen)}
               className={`px-2 py-1 text-[10px] rounded-full font-medium flex items-center gap-1 transition-all
                             ${interpolationMode === InterpolationMode.RGB
-                  ? 'bg-stone-800 text-stone-500 cursor-not-allowed'
-                  : 'bg-white text-black hover:bg-stone-100 active:scale-95'}`}
+                  ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                  : 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 shadow-sm'}`}
             >
               {interpolationMode === InterpolationMode.RGB ? 'Origin' : (currentQuality === 10 ? 'Default' : currentQuality === 4 ? 'Low' : 'High')}
               {interpolationMode !== InterpolationMode.RGB && (
@@ -142,7 +142,7 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
 
             {/* Dropdown Menu */}
             <div
-              className={`absolute right-0 top-full mt-1 bg-stone-900 border border-stone-800 rounded-lg p-1 shadow-xl z-20 w-32 origin-top-right transition-all duration-200 
+              className={`absolute right-0 top-full mt-1 bg-popover border border-border rounded-lg p-1 shadow-xl z-20 w-32 origin-top-right transition-all duration-200 
                             ${isQualityOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}
             >
               {[
@@ -156,8 +156,8 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
                     setQuality(opt.value);
                     setIsQualityOpen(false);
                   }}
-                  className={`w-full text-left px-2 py-1.5 text-[10px] rounded hover:bg-stone-800 transition-colors flex items-center justify-between
-                                        ${currentQuality === opt.value ? 'text-white bg-stone-800/50' : 'text-stone-400'}`}
+                  className={`w-full text-left px-2 py-1.5 text-[10px] rounded hover:bg-accent hover:text-accent-foreground transition-colors flex items-center justify-between
+                                        ${currentQuality === opt.value ? 'bg-accent/50 text-accent-foreground' : 'text-muted-foreground'}`}
                 >
                   {opt.label}
                   {currentQuality === opt.value && (
@@ -193,19 +193,19 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
                 style={{ backgroundColor: stop.color }}
               ></div>
             </div>
-            <div className="absolute top-1/2 -translate-y-1/2 w-[1px] h-10 bg-white/20 mix-blend-overlay pointer-events-none group-hover/handle:bg-white/40"></div>
+            <div className="absolute top-1/2 -translate-y-1/2 w-[1px] h-10 bg-foreground/10 mix-blend-overlay pointer-events-none group-hover/handle:bg-foreground/20"></div>
           </div>
         ))}
       </div>
 
       <div className="space-y-1 mb-6 flex-1 overflow-y-auto custom-scrollbar pr-2 min-h-[100px]">
         {sorted.map(stop => (
-          <div key={stop.id} className="flex items-center gap-4 text-xs font-mono group hover:bg-white/5 p-1 rounded transition-colors">
-            <div className="w-12 text-stone-400">{(stop.position * 100).toFixed(0)}%</div>
+          <div key={stop.id} className="flex items-center gap-4 text-xs font-mono group hover:bg-muted p-1 rounded transition-colors">
+            <div className="w-12 text-muted-foreground">{(stop.position * 100).toFixed(0)}%</div>
             <div className="flex items-center gap-3 flex-1">
               <div className="relative">
                 <div
-                  className="w-5 h-5 rounded-md shadow-sm ring-1 ring-white/20 hover:ring-white/40 transition-all cursor-pointer"
+                  className="w-5 h-5 rounded-md shadow-sm ring-1 ring-border hover:ring-muted-foreground transition-all cursor-pointer"
                   style={{ backgroundColor: stop.color }}
                 ></div>
                 <input
@@ -219,15 +219,15 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
                 type="text"
                 value={stop.color.toUpperCase()}
                 onChange={(e) => updateStop(stop.id, { color: e.target.value })}
-                className="bg-transparent text-stone-300 outline-none w-20 uppercase font-medium"
+                className="bg-transparent text-foreground outline-none w-20 uppercase font-medium"
               />
             </div>
-            <div className="text-right text-stone-500 font-medium bg-stone-900 px-2 py-0.5 rounded text-[10px]">
+            <div className="text-right text-muted-foreground font-medium bg-muted px-2 py-0.5 rounded text-[10px]">
               STOP {(stop.position * 100).toFixed(0)}
             </div>
             <button
               onClick={() => removeStop(stop.id)}
-              className={`text-stone-600 hover:text-stone-300 transition-colors ${stops.length <= 2 ? 'invisible' : ''}`}
+              className={`text-muted-foreground hover:text-foreground transition-colors ${stops.length <= 2 ? 'invisible' : ''}`}
             >
               Delete
             </button>
@@ -237,7 +237,7 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
 
       <button
         onClick={addStop}
-        className="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-stone-400 text-xs font-medium rounded-lg transition-colors border border-stone-800 self-end mt-auto"
+        className="w-full py-2.5 bg-secondary hover:bg-secondary/80 text-secondary-foreground text-xs font-medium rounded-lg transition-colors border border-border self-end mt-auto"
       >
         Add new stop
       </button>

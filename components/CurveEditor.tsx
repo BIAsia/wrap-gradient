@@ -81,7 +81,7 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => 
                         onPointerUp={handlePointerUp}
                     >
                         <path d={`M ${padding} ${padding} V ${size - padding} H ${size - padding}`}
-                            stroke="#333" strokeWidth="1" fill="none" />
+                            className="stroke-border" strokeWidth="1" fill="none" />
 
                         {[0, 0.25, 0.5, 0.75, 1].map(t => {
                             const pos = padding + t * graphSize;
@@ -89,36 +89,36 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => 
                             if (t === 0 || t === 1) return null;
                             return (
                                 <g key={t}>
-                                    <line x1={pos} y1={padding} x2={pos} y2={size - padding} stroke="#222" strokeWidth="1" />
-                                    <line x1={padding} y1={yPos} x2={size - padding} y2={yPos} stroke="#222" strokeWidth="1" />
+                                    <line x1={pos} y1={padding} x2={pos} y2={size - padding} className="stroke-border/30" strokeWidth="1" />
+                                    <line x1={padding} y1={yPos} x2={size - padding} y2={yPos} className="stroke-border/30" strokeWidth="1" />
                                 </g>
                             )
                         })}
 
-                        <line x1={start.x} y1={start.y} x2={sp1.x} y2={sp1.y} stroke="#444" strokeWidth="1" />
-                        <line x1={end.x} y1={end.y} x2={sp2.x} y2={sp2.y} stroke="#444" strokeWidth="1" />
+                        <line x1={start.x} y1={start.y} x2={sp1.x} y2={sp1.y} className="stroke-muted-foreground/30" strokeWidth="1" />
+                        <line x1={end.x} y1={end.y} x2={sp2.x} y2={sp2.y} className="stroke-muted-foreground/30" strokeWidth="1" />
 
                         <path
                             d={`M ${start.x} ${start.y} C ${sp1.x} ${sp1.y}, ${sp2.x} ${sp2.y}, ${end.x} ${end.y}`}
-                            stroke="white"
+                            className="stroke-foreground"
                             strokeWidth="2"
                             fill="none"
                         />
 
                         <circle
                             cx={sp1.x} cy={sp1.y} r="4"
-                            className="fill-black stroke-white stroke-2 cursor-pointer hover:stroke-amber-500 transition-colors"
+                            className="fill-background stroke-foreground stroke-2 cursor-pointer hover:stroke-primary transition-colors"
                             onPointerDown={handlePointerDown('p1')}
                         />
 
                         <circle
                             cx={sp2.x} cy={sp2.y} r="4"
-                            className="fill-black stroke-white stroke-2 cursor-pointer hover:stroke-amber-500 transition-colors"
+                            className="fill-background stroke-foreground stroke-2 cursor-pointer hover:stroke-primary transition-colors"
                             onPointerDown={handlePointerDown('p2')}
                         />
 
-                        <circle cx={start.x} cy={start.y} r="3" fill="white" />
-                        <circle cx={end.x} cy={end.y} r="3" fill="white" />
+                        <circle cx={start.x} cy={start.y} r="3" className="fill-foreground" />
+                        <circle cx={end.x} cy={end.y} r="3" className="fill-foreground" />
                     </svg>
                 </div>
 
@@ -130,8 +130,8 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({ curve, onChange }) => 
                             className={`
                             px-3 py-1 text-[10px] sm:text-xs rounded-full border transition-all
                             ${JSON.stringify(curve.p1) === JSON.stringify(preset.p1) && JSON.stringify(curve.p2) === JSON.stringify(preset.p2)
-                                    ? 'bg-white text-black border-white font-medium'
-                                    : 'bg-transparent text-stone-500 border-stone-800 hover:border-stone-600 hover:text-stone-300'}
+                                    ? 'bg-primary text-primary-foreground border-primary font-medium'
+                                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground hover:text-foreground'}
                         `}
                         >
                             {preset.label}

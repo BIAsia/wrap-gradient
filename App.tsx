@@ -65,58 +65,24 @@ const App: React.FC = () => {
       return sortedStops;
     }
 
-    // Strategy 2: OKLAB - Target total counts: Low 4 (min), Default 10 (max), High 16 (max)
-    if (interpolationMode === InterpolationMode.OKLAB) {
-      const n = sortedStops.length;
-      if (n < 2) return sortedStops;
-
-      let interpolationCount = 0;
-      if (samples === 4) {
-        // Low: Min 4 stops total. k = ceil((4-n)/(n-1))
-        interpolationCount = Math.max(0, Math.ceil((4 - n) / (n - 1)));
-      } else {
-        // Default/High: Max 10/16 stops total. k = floor((target-n)/(n-1))
-        const target = samples === 16 ? 16 : 10;
-        interpolationCount = Math.max(0, Math.floor((target - n) / (n - 1)));
-      }
-
-      if (interpolationCount === 0) return sortedStops;
-
+    // Strategy 2: OKLAB & OKLCH (and others like LCH) - Unified Adaptive sampling with Curve support
+    if (interpolationMode === InterpolationMode.OKLAB || interpolationMode === InterpolationMode.OKLCH || interpolationMode === InterpolationMode.LCH) {
       const result: ColorStop[] = [];
-      for (let i = 0; i < n; i++) {
-        result.push(sortedStops[i]);
-        if (i < n - 1) {
-          const start = sortedStops[i];
-          const end = sortedStops[i + 1];
-          for (let j = 1; j <= interpolationCount; j++) {
-            const t = j / (interpolationCount + 1);
-            const pos = start.position + t * (end.position - start.position);
-            result.push({
-              id: `inter-${start.id}-${end.id}-${j}`,
-              position: pos,
-              color: getColorAt(pos)
-            });
-          }
-        }
+      const actualSamples = samples || 10;
+      const positions = generateAdaptiveSamples(actualSamples, curve.p1, curve.p2);
+
+      for (const x of positions) {
+        const y = solveCubicBezier(x, curve.p1, curve.p2);
+        result.push({
+          id: `gen-${x}`,
+          position: x,
+          color: getColorAt(y)
+        });
       }
       return result;
     }
 
-    // Strategy 3: OKLCH (and others like LCH if added) - Adaptive sampling
-    const result: ColorStop[] = [];
-    const actualSamples = samples || 10;
-    const positions = generateAdaptiveSamples(actualSamples, curve.p1, curve.p2);
-
-    for (const x of positions) {
-      const y = solveCubicBezier(x, curve.p1, curve.p2);
-      result.push({
-        id: `gen-${x}`,
-        position: x,
-        color: getColorAt(y)
-      });
-    }
-
-    return result;
+    return sortedStops;
   }, [stops, curve, interpolationMode, samples]);
 
   const handlePresetSelect = (newStops: ColorStop[], mode?: InterpolationMode) => {
@@ -133,8 +99,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen ${THEME.typography.color.primary} font-sans selection:bg-stone-800 selection:text-white flex flex-col overflow-hidden ${THEME.animation.transition} ${THEME.animation.duration} bg-background`}>
-      <Header />
+    <div className={`min-h-screen ${THEME.typography.color.primary} font-sans selection:bg-primary selection:text-primary-foreground flex flex-col overflow-hidden ${THEME.animation.transition} ${THEME.animation.duration} bg-background`}>
+      <Header theme={theme} onToggleTheme={toggleTheme} />
 
       <main className={`flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x ${THEME.layout.divide} ${THEME.layout.border} border-t min-h-0`}>
 

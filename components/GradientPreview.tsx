@@ -90,7 +90,7 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops,
                 </button>
             </div>
 
-            <div className="flex-1 relative rounded-xl overflow-hidden bg-black flex items-center justify-center p-4 min-h-[300px]">
+            <div className={`flex-1 relative rounded-xl overflow-hidden flex items-center justify-center p-4 min-h-[300px]`}>
                 {renderPreview()}
             </div>
         </div>

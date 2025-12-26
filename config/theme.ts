@@ -25,8 +25,8 @@ export const THEME = {
         color: {
             primary: 'text-foreground',
             secondary: 'text-muted-foreground',
-            label: 'text-stone-500',
-            accent: 'text-white',
+            label: 'text-muted-foreground',
+            accent: 'text-accent-foreground',
         },
         size: {
             xs: 'text-xs',

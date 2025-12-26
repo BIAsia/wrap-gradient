@@ -90,8 +90,8 @@ ${figmaStops}
                         className={`
                 px-3 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap
                 ${format === tab.id
-                                ? 'bg-white text-black border-white'
-                                : 'bg-transparent text-stone-500 border-stone-800 hover:border-stone-600 hover:text-stone-300'}
+                                ? 'bg-primary text-primary-foreground border-primary'
+                                : `bg-transparent ${THEME.typography.color.label} border-border hover:border-muted-foreground hover:${THEME.typography.color.primary}`}
             `}
                     >
                         {tab.label}
@@ -99,11 +99,11 @@ ${figmaStops}
                 ))}
             </div>
 
-            <div className="flex-1 bg-stone-900 rounded-xl p-4 border border-stone-800 relative overflow-hidden group">
+            <div className="flex-1 bg-muted rounded-xl p-4 border border-border relative overflow-hidden group">
                 <textarea
                     readOnly
                     value={generateCode()}
-                    className="w-full h-full bg-transparent text-stone-400 font-mono text-xs resize-none focus:outline-none leading-relaxed"
+                    className="w-full h-full bg-transparent text-muted-foreground font-mono text-xs resize-none focus:outline-none leading-relaxed"
                     spellCheck={false}
                 />
             </div>

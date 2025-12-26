@@ -5,10 +5,10 @@ export function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? [
-        parseInt(result[1], 16) / 255,
-        parseInt(result[2], 16) / 255,
-        parseInt(result[3], 16) / 255,
-      ]
+      parseInt(result[1], 16) / 255,
+      parseInt(result[2], 16) / 255,
+      parseInt(result[3], 16) / 255,
+    ]
     : [0, 0, 0];
 }
 
@@ -124,16 +124,16 @@ export function interpolateColor(
   if (mode === InterpolationMode.OKLCH) {
     const [L1, C1, h1] = rgbToOklch(r1, g1, b1);
     const [L2, C2, h2] = rgbToOklch(r2, g2, b2);
-    
+
     const L = lerp(L1, L2, t);
     const C = lerp(C1, C2, t);
-    
+
     // Hue interpolation needs to take shortest path
     let dh = h2 - h1;
     if (dh > 180) dh -= 360;
     if (dh < -180) dh += 360;
     const h = h1 + dh * t;
-    
+
     const [r, g, b] = oklchToRgb(L, C, h);
     return rgbToHex(r, g, b);
   }
