@@ -72,7 +72,7 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                     onClick={() => handleSelect(preset.stops[0].id, preset.stops, preset.mode)}
                     className={`
                         transition-all duration-500 ease-out relative flex-shrink-0
-                        ${isSelected ? 'flex-[4] h-full z-10' : 'flex-1 h-[40%] hover:flex-[1.5] hover:h-[60%] hover:z-20'}
+                        ${isSelected ? 'flex-[4] h-[80%] z-10' : 'flex-1 h-[40%] hover:flex-[1.5] hover:h-[60%] hover:z-20'}
                     `}
                     style={{
                         background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
@@ -108,13 +108,13 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
             <div className="flex-1 flex flex-col min-h-0 pb-4 px-4 overflow-hidden">
                 <div className="flex-1 flex flex-col gap-0 h-full">
                     {/* Row 1 */}
-                    <div className="flex-1 flex items-center w-full min-h-0">
+                    {/* <div className="flex-1 flex items-center w-full min-h-0">
                         {renderRow(row1)}
-                    </div>
+                    </div> */}
                     {/* Row 2 */}
-                    <div className="flex-1 flex items-center w-full min-h-0">
+                    {/* <div className="flex-1 flex items-center w-full min-h-0">
                         {renderRow(row2)}
-                    </div>
+                    </div> */}
                     {/* Row 3 - OKLCH Presets */}
                     <div className="flex-1 flex items-center w-full min-h-0">
                         {renderRow(row3)}

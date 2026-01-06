@@ -40,7 +40,7 @@ export const THEME = {
     panel: {
         header: {
             padding: 'mb-4',
-            title: 'text-sm font-medium',
+            title: 'text-xs font-regular uppercase',
         },
         container: 'bg-background transition-colors duration-300',
         sectionBorder: 'border-b border-border',

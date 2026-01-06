@@ -60,29 +60,21 @@ const App: React.FC = () => {
       return sortedStops[sortedStops.length - 1].color;
     };
 
-    // Strategy 1: RGB - Just return original stops
-    if (interpolationMode === InterpolationMode.RGB) {
-      return sortedStops;
+    // Strategy: Unified Adaptive sampling with Curve support for all modes except maybe future ones
+    // We now include RGB, OKLAB, OKLCH, and LCH
+    const result: ColorStop[] = [];
+    const actualSamples = samples || 10;
+    const positions = generateAdaptiveSamples(actualSamples, curve.p1, curve.p2);
+
+    for (const x of positions) {
+      const y = solveCubicBezier(x, curve.p1, curve.p2);
+      result.push({
+        id: `gen-${x}`,
+        position: x,
+        color: getColorAt(y)
+      });
     }
-
-    // Strategy 2: OKLAB & OKLCH (and others like LCH) - Unified Adaptive sampling with Curve support
-    if (interpolationMode === InterpolationMode.OKLAB || interpolationMode === InterpolationMode.OKLCH || interpolationMode === InterpolationMode.LCH) {
-      const result: ColorStop[] = [];
-      const actualSamples = samples || 10;
-      const positions = generateAdaptiveSamples(actualSamples, curve.p1, curve.p2);
-
-      for (const x of positions) {
-        const y = solveCubicBezier(x, curve.p1, curve.p2);
-        result.push({
-          id: `gen-${x}`,
-          position: x,
-          color: getColorAt(y)
-        });
-      }
-      return result;
-    }
-
-    return sortedStops;
+    return result;
   }, [stops, curve, interpolationMode, samples]);
 
   const handlePresetSelect = (newStops: ColorStop[], mode?: InterpolationMode) => {
@@ -135,7 +127,12 @@ const App: React.FC = () => {
         {/* Column 3: Info & Export */}
         <div className="flex flex-col min-h-0">
           <div className={`h-[40%] ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder} flex items-center justify-center`}>
-            <InfoPanel stops={warpedStops} />
+            <InfoPanel
+              warpedStops={warpedStops}
+              interpolationMode={interpolationMode}
+              originalStops={stops}
+              curve={curve}
+            />
           </div>
           <div className={`h-[60%] ${THEME.layout.padding.compact} sm:${THEME.layout.padding.standard}`}>
             <CodeOutput stops={warpedStops} />

@@ -95,11 +95,6 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
 
   return (
     <div className="flex flex-col h-full">
-      <div className={`flex items-center justify-between mb-2`}>
-        <h2 className={`${THEME.panel.header.title} ${THEME.typography.color.label}`}>Key stops</h2>
-        <button className={`${THEME.typography.size.xs} ${THEME.typography.color.label} hover:${THEME.typography.color.primary} transition-colors cursor-not-allowed opacity-50`}>Import from pasteboard</button>
-      </div>
-
       {/* Interpolation Mode Selector */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center bg-muted rounded-full p-0.5 border border-border">
@@ -118,26 +113,22 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
           <span className="text-xs text-muted-foreground">Quality</span>
           <div className="relative" ref={dropdownRef}>
             <button
-              onClick={() => interpolationMode !== InterpolationMode.RGB && setIsQualityOpen(!isQualityOpen)}
+              onClick={() => setIsQualityOpen(!isQualityOpen)}
               className={`px-2 py-1 text-[10px] rounded-full font-medium flex items-center gap-1 transition-all
-                            ${interpolationMode === InterpolationMode.RGB
-                  ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                  : 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 shadow-sm'}`}
+                            bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 shadow-sm`}
             >
-              {interpolationMode === InterpolationMode.RGB ? 'Origin' : (currentQuality === 10 ? 'Default' : currentQuality === 4 ? 'Low' : 'High')}
-              {interpolationMode !== InterpolationMode.RGB && (
-                <svg
-                  width="8"
-                  height="8"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className={`transition-transform duration-200 ${isQualityOpen ? 'rotate-180' : ''}`}
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              )}
+              {currentQuality === 10 ? 'Default' : currentQuality === 4 ? 'Low' : 'High'}
+              <svg
+                width="8"
+                height="8"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className={`transition-transform duration-200 ${isQualityOpen ? 'rotate-180' : ''}`}
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
             </button>
 
             {/* Dropdown Menu */}
@@ -170,6 +161,11 @@ export const ColorStopsEditor: React.FC<ColorStopsEditorProps> = ({
             </div>
           </div>
         </div>
+      </div>
+
+      <div className={`flex items-center justify-between mb-2`}>
+        <h2 className={`${THEME.panel.header.title} ${THEME.typography.color.label}`}>Key stops</h2>
+        <button className={`${THEME.typography.size.xs} ${THEME.typography.color.label} hover:${THEME.typography.color.primary} transition-colors cursor-not-allowed opacity-50`}>Import from pasteboard</button>
       </div>
 
       {/* Main Slider Track */}

@@ -16,6 +16,7 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops,
 
     const gradient = useMemo(() => getGradientString(warpedStops), [warpedStops]);
     const gradientDown = useMemo(() => getGradientString(warpedStops, 'to bottom'), [warpedStops]);
+    const gradientRight = useMemo(() => getGradientString(warpedStops, 'to right'), [warpedStops]);
 
     const changePreview = () => {
         setPreviewType((prev) => (prev + 1) % 5);
@@ -34,7 +35,23 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops,
         });
 
         switch (previewType) {
-            case 1: // Bars (Frame 37)
+            case 1: // Text "Gradient"
+                return (
+                    <div className="w-full h-full flex items-center justify-center px-4">
+                        <h1
+                            className="text-8xl font-medium italic uppercase tracking-[calc(-0.05em)] leading-tight text-center"
+                            style={{
+                                background: gradientRight,
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                            }}
+                        >
+                            Gradient
+                        </h1>
+                    </div>
+                );
+            case 2: // Bars (Frame 37)
                 return (
                     <div className="w-full h-full max-w-[500px] flex items-center justify-center">
                         <div className="relative w-full aspect-[450/256]">
@@ -47,7 +64,7 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops,
                         </div>
                     </div>
                 );
-            case 2: // Rectangles (Frame 36)
+            case 3: // Rectangles (Frame 36)
                 return (
                     <div className="w-full h-full max-w-[400px] flex items-center justify-center">
                         <div className="relative w-full aspect-[3/4] scale-90">
@@ -57,7 +74,7 @@ export const GradientPreview: React.FC<GradientPreviewProps> = ({ originalStops,
                         </div>
                     </div>
                 );
-            case 3: // Small Circles (Snippet 4)
+            case 4: // Small Circles (Snippet 4)
                 return (
                     <div className="w-full h-full max-w-[400px] flex items-center justify-center">
                         <div className="relative w-full aspect-square">
