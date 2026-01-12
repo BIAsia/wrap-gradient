@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
+import { About } from './components/About';
 import { CurveEditor } from './components/CurveEditor';
 import { ColorStopsEditor } from './components/ColorStopsEditor';
 import { GradientPreview } from './components/GradientPreview';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
   const [interpolationMode, setInterpolationMode] = useState<InterpolationMode>(InterpolationMode.OKLCH);
   const [samples, setSamples] = useState<number>(10); // Default 10 as requested
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [view, setView] = useState<'editor' | 'about'>('editor');
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -92,54 +94,65 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${THEME.typography.color.primary} font-sans selection:bg-primary selection:text-primary-foreground flex flex-col overflow-hidden ${THEME.animation.transition} ${THEME.animation.duration} bg-background`}>
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        currentView={view}
+        onViewChange={setView}
+      />
 
-      <main className={`flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x ${THEME.layout.divide} ${THEME.layout.border} border-t min-h-0`}>
+      {view === 'editor' ? (
+        <main className={`flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x ${THEME.layout.divide} ${THEME.layout.border} border-t min-h-0`}>
 
-        {/* Column 1: Preview & Presets */}
-        <div className="flex flex-col min-h-0">
-          <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
-            <GradientPreview originalStops={stops} warpedStops={warpedStops} />
+          {/* Column 1: Preview & Presets */}
+          <div className="flex flex-col min-h-0">
+            <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
+              <GradientPreview originalStops={stops} warpedStops={warpedStops} />
+            </div>
+            <div className={`h-1/2 ${THEME.layout.padding.standard}`}>
+              <Presets onSelect={handlePresetSelect} />
+            </div>
           </div>
-          <div className={`h-1/2 ${THEME.layout.padding.standard}`}>
-            <Presets onSelect={handlePresetSelect} />
-          </div>
-        </div>
 
-        {/* Column 2: Curve & Stops */}
-        <div className="flex flex-col min-h-0">
-          <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
-            <CurveEditor curve={curve} onChange={setCurve} />
+          {/* Column 2: Curve & Stops */}
+          <div className="flex flex-col min-h-0">
+            <div className={`h-1/2 ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder}`}>
+              <CurveEditor curve={curve} onChange={setCurve} />
+            </div>
+            <div className={`h-1/2 ${THEME.layout.padding.standard} overflow-hidden`}>
+              <ColorStopsEditor
+                stops={stops}
+                setStops={setStops}
+                interpolationMode={interpolationMode}
+                setInterpolationMode={setInterpolationMode}
+                currentQuality={samples}
+                setQuality={setSamples}
+                warpedStops={warpedStops} // Pass warped stops for track background
+              />
+            </div>
           </div>
-          <div className={`h-1/2 ${THEME.layout.padding.standard} overflow-hidden`}>
-            <ColorStopsEditor
-              stops={stops}
-              setStops={setStops}
-              interpolationMode={interpolationMode}
-              setInterpolationMode={setInterpolationMode}
-              currentQuality={samples}
-              setQuality={setSamples}
-              warpedStops={warpedStops} // Pass warped stops for track background
-            />
-          </div>
-        </div>
 
-        {/* Column 3: Info & Export */}
-        <div className="flex flex-col min-h-0">
-          <div className={`h-[40%] ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder} flex items-center justify-center`}>
-            <InfoPanel
-              warpedStops={warpedStops}
-              interpolationMode={interpolationMode}
-              originalStops={stops}
-              curve={curve}
-            />
+          {/* Column 3: Info & Export */}
+          <div className="flex flex-col min-h-0">
+            <div className={`h-[40%] ${THEME.layout.padding.standard} ${THEME.panel.sectionBorder} flex items-center justify-center`}>
+              <InfoPanel
+                warpedStops={warpedStops}
+                interpolationMode={interpolationMode}
+                originalStops={stops}
+                curve={curve}
+              />
+            </div>
+            <div className={`h-[60%] ${THEME.layout.padding.compact} sm:${THEME.layout.padding.standard}`}>
+              <CodeOutput stops={warpedStops} />
+            </div>
           </div>
-          <div className={`h-[60%] ${THEME.layout.padding.compact} sm:${THEME.layout.padding.standard}`}>
-            <CodeOutput stops={warpedStops} />
-          </div>
-        </div>
 
-      </main>
+        </main>
+      ) : (
+        <main className="flex-1 flex flex-col min-h-0 border-t border-border bg-background">
+          <About />
+        </main>
+      )}
     </div>
   );
 };
