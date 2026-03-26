@@ -61,6 +61,10 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
 
     const activePresets = presetsByFamily[family];
     const featuredPresets = activePresets.slice(0, FEATURED_COUNT);
+    const allPresetGroups = [
+        { key: 'oklch', title: 'OKLCH', presets: PRESETS_OKLCH },
+        { key: 'oklab', title: 'OKLAB', presets: PRESETS_OKLAB },
+    ] as const;
 
     useEffect(() => {
         if (!isAllOpen) return;
@@ -170,7 +174,7 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                     <div className="h-full flex flex-col min-h-0">
                         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
                             <h2 className="text-sm font-medium tracking-wide text-white uppercase">
-                                All {family.toUpperCase()} presets
+                                All presets
                             </h2>
                             <button
                                 onClick={() => setIsAllOpen(false)}
@@ -180,45 +184,59 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                             </button>
                         </div>
 
-                        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4">
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-full">
-                                {activePresets.map((preset, index) => {
-                                    const isSelected = selectedId === preset.stops[0].id;
-                                    const gradientStr = [...preset.stops]
-                                        .sort((a, b) => a.position - b.position)
-                                        .map(s => `${s.color} ${s.position * 100}%`)
-                                        .join(', ');
+                        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-8">
+                            {allPresetGroups.map((group) => (
+                                <section key={group.key} className="space-y-4">
+                                    <h3 className="text-xs font-medium tracking-wide text-white/70 uppercase">
+                                        {group.title}
+                                    </h3>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-full">
+                                        {group.presets.map((preset, index) => {
+                                            const isSelected = selectedId === preset.stops[0].id;
+                                            const gradientStr = [...preset.stops]
+                                                .sort((a, b) => a.position - b.position)
+                                                .map(s => `${s.color} ${s.position * 100}%`)
+                                                .join(', ');
 
-                                    const cssMode = preset.mode === InterpolationMode.RGB ? 'srgb' : preset.mode;
-                                    const displayName = preset.name || `${preset.mode.toUpperCase()} ${index + 1}`;
+                                            const cssMode = preset.mode === InterpolationMode.OKLAB
+                                                ? 'oklab'
+                                                : preset.mode === InterpolationMode.OKLCH
+                                                    ? 'oklch'
+                                                    : 'srgb';
+                                            const displayName = preset.name || `${preset.mode.toUpperCase()} ${index + 1}`;
 
-                                    return (
-                                        <button
-                                            key={preset.stops[0].id}
-                                            onClick={() => {
-                                                handleSelect(preset.stops[0].id, preset.stops, preset.mode);
-                                                setIsAllOpen(false);
-                                            }}
-                                            className="relative block aspect-[3/4] overflow-hidden text-left"
-                                            style={{
-                                                background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
-                                            }}
-                                            title={displayName}
-                                            aria-label={displayName}
-                                        >
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
-                                            <div className="absolute left-3 right-3 bottom-3 pointer-events-none">
-                                                <div className="text-xs text-white/90 leading-snug break-words">
-                                                    {displayName}
-                                                </div>
-                                            </div>
-                                            {isSelected && (
-                                                <div className="absolute inset-0 border-2 border-white pointer-events-none"></div>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                                            return (
+                                                <button
+                                                    key={preset.stops[0].id}
+                                                    onClick={() => {
+                                                        handleSelect(preset.stops[0].id, preset.stops, preset.mode);
+                                                        setIsAllOpen(false);
+                                                    }}
+                                                    className="relative block aspect-[3/4] overflow-hidden text-left"
+                                                    style={{
+                                                        background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
+                                                    }}
+                                                    title={displayName}
+                                                    aria-label={displayName}
+                                                >
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
+                                                    <div className="absolute left-3 right-3 bottom-3 pointer-events-none">
+                                                        <div className="text-[10px] text-white/60 uppercase tracking-[0.16em] mb-1">
+                                                            {group.title}
+                                                        </div>
+                                                        <div className="text-xs text-white/90 leading-snug break-words">
+                                                            {displayName}
+                                                        </div>
+                                                    </div>
+                                                    {isSelected && (
+                                                        <div className="absolute inset-0 border-2 border-white pointer-events-none"></div>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </section>
+                            ))}
                         </div>
                     </div>
                 </div>
