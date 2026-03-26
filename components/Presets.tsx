@@ -62,8 +62,8 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
     const activePresets = presetsByFamily[family];
     const featuredPresets = activePresets.slice(0, FEATURED_COUNT);
     const allPresetGroups = [
-        { key: 'oklch', title: 'OKLCH', presets: PRESETS_OKLCH },
         { key: 'oklab', title: 'OKLAB', presets: PRESETS_OKLAB },
+        { key: 'oklch', title: 'OKLCH', presets: PRESETS_OKLCH },
     ] as const;
 
     useEffect(() => {
@@ -190,7 +190,7 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                     <h3 className="text-xs font-medium tracking-wide text-white/70 uppercase">
                                         {group.title}
                                     </h3>
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-full">
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 min-h-full">
                                         {group.presets.map((preset, index) => {
                                             const isSelected = selectedId === preset.stops[0].id;
                                             const gradientStr = [...preset.stops]
@@ -216,7 +216,7 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                                     title={displayName}
                                                     aria-label={displayName}
                                                 >
-                                                    <div className="relative aspect-[3/4] overflow-hidden"
+                                                    <div className="relative aspect-[9/16] overflow-hidden"
                                                         style={{
                                                             background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
                                                         }}
