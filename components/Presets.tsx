@@ -212,15 +212,20 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                                         handleSelect(preset.stops[0].id, preset.stops, preset.mode);
                                                         setIsAllOpen(false);
                                                     }}
-                                                    className="relative block aspect-[3/4] overflow-hidden text-left"
-                                                    style={{
-                                                        background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
-                                                    }}
+                                                    className="block text-left"
                                                     title={displayName}
                                                     aria-label={displayName}
                                                 >
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
-                                                    <div className="absolute left-3 right-3 bottom-3 pointer-events-none">
+                                                    <div className="relative aspect-[3/4] overflow-hidden"
+                                                        style={{
+                                                            background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
+                                                        }}
+                                                    >
+                                                        {isSelected && (
+                                                            <div className="absolute inset-0 border-2 border-white pointer-events-none"></div>
+                                                        )}
+                                                    </div>
+                                                    <div className="bg-black px-3 py-3">
                                                         <div className="text-[10px] text-white/60 uppercase tracking-[0.16em] mb-1">
                                                             {group.title}
                                                         </div>
@@ -228,9 +233,6 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                                             {displayName}
                                                         </div>
                                                     </div>
-                                                    {isSelected && (
-                                                        <div className="absolute inset-0 border-2 border-white pointer-events-none"></div>
-                                                    )}
                                                 </button>
                                             );
                                         })}
