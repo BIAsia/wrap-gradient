@@ -181,8 +181,8 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                         </div>
 
                         <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4">
-                            <div className="space-y-2 min-h-full">
-                                {activePresets.map((preset) => {
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-full">
+                                {activePresets.map((preset, index) => {
                                     const isSelected = selectedId === preset.stops[0].id;
                                     const gradientStr = [...preset.stops]
                                         .sort((a, b) => a.position - b.position)
@@ -190,6 +190,7 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                         .join(', ');
 
                                     const cssMode = preset.mode === InterpolationMode.RGB ? 'srgb' : preset.mode;
+                                    const displayName = preset.name || `${preset.mode.toUpperCase()} ${index + 1}`;
 
                                     return (
                                         <button
@@ -198,13 +199,19 @@ export const Presets: React.FC<PresetsProps> = ({ onSelect }) => {
                                                 handleSelect(preset.stops[0].id, preset.stops, preset.mode);
                                                 setIsAllOpen(false);
                                             }}
-                                            className="relative block w-full h-16 overflow-hidden"
+                                            className="relative block aspect-[3/4] overflow-hidden text-left"
                                             style={{
                                                 background: `linear-gradient(in ${cssMode} to top, ${gradientStr})`,
                                             }}
-                                            title={preset.name}
-                                            aria-label={preset.name}
+                                            title={displayName}
+                                            aria-label={displayName}
                                         >
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
+                                            <div className="absolute left-3 right-3 bottom-3 pointer-events-none">
+                                                <div className="text-xs text-white/90 leading-snug break-words">
+                                                    {displayName}
+                                                </div>
+                                            </div>
                                             {isSelected && (
                                                 <div className="absolute inset-0 border-2 border-white pointer-events-none"></div>
                                             )}
