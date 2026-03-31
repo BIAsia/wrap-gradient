@@ -4,8 +4,8 @@ import { Github, ExternalLink, Sun, Moon } from 'lucide-react';
 interface HeaderProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
-  currentView: 'editor' | 'about';
-  onViewChange: (view: 'editor' | 'about') => void;
+  currentView: 'editor' | 'about' | 'shader';
+  onViewChange: (view: 'editor' | 'about' | 'shader') => void;
 }
 
 import { THEME } from '../config/theme';
@@ -37,6 +37,12 @@ export const Header: React.FC<HeaderProps> = ({ theme, onToggleTheme, currentVie
               <span className="hidden sm:inline">Light</span>
             </>
           )}
+        </button>
+        <button
+          onClick={() => onViewChange('shader')}
+          className={`${currentView === 'shader' ? THEME.typography.color.primary : THEME.typography.color.secondary} hover:${THEME.typography.color.primary} ${THEME.animation.transition}`}
+        >
+          Shader
         </button>
         <button
           onClick={() => onViewChange('about')}

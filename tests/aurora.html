@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- Preset: Glacial Glow 冰川 | Type: Aurora Gradient -->
+<html>
+<head>
+<meta charset="utf-8">
+<title>Aurora — Glacial Glow 冰川</title>
+<style>
+  * { margin: 0; padding: 0; }
+  body { overflow: hidden; background: #020C19; }
+  canvas { display: block; }
+  .label {
+    position: fixed; bottom: 28px; left: 28px;
+    font: 12px/1 system-ui, sans-serif;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(180,200,255,0.18); pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="label">Glacial Glow 冰川 · Aurora</div>
+<script>
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl');
+
+const VS = `attribute vec2 a_pos; void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }`;
+
+const FS = `
+precision highp float;
+uniform float u_time;
+uniform vec2  u_resolution;
+
+/* ── Simplex 2D ───────────────────────────────────────────────── */
+vec3 mod289(vec3 x){ return x - floor(x*(1.0/289.0))*289.0; }
+vec2 mod289(vec2 x){ return x - floor(x*(1.0/289.0))*289.0; }
+vec3 permute(vec3 x){ return mod289(((x*34.0)+10.0)*x); }
+
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                     -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy));
+  vec2 x0 = v - i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0,0.0) : vec2(0.0,1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod289(i);
+  vec3 p = permute(permute(i.y + vec3(0.0,i1.y,1.0)) + i.x + vec3(0.0,i1.x,1.0));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+  m = m*m; m = m*m;
+  vec3 x = 2.0*fract(p*C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314*(a0*a0+h*h);
+  vec3 g;
+  g.x  = a0.x *x0.x  + h.x *x0.y;
+  g.yz = a0.yz*x12.xz + h.yz*x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+/* ── Palette: Glacial Glow 冰川 ───────────────────────────────── */
+vec3 base   = vec3(0.008, 0.047, 0.098);  // #020C19 deep navy
+vec3 indigo = vec3(0.145, 0.220, 0.600);  // #253899
+vec3 blue   = vec3(0.000, 0.482, 0.863);  // #007BDC vivid blue
+vec3 lav    = vec3(0.702, 0.600, 0.957);  // #B399F4 lavender
+vec3 blush  = vec3(0.922, 0.804, 0.804);  // #EBCDCD blush
+
+/* ── Aurora curtain layer ─────────────────────────────────────── */
+float curtain(vec2 uv, float t,
+              float freqX, float freqDetail, float phaseOff,
+              float speed, float centerY, float spread){
+
+  // Primary fold structure — varies along x, very slow in y
+  float fold = snoise(vec2(uv.x * freqX + t * speed, 0.5 + phaseOff));
+
+  // Detail layer — slightly faster, higher frequency
+  fold += 0.5 * snoise(vec2(uv.x * freqDetail - t * speed * 0.6,
+                             1.0 + phaseOff));
+
+  // Fine shimmer
+  fold += 0.25 * snoise(vec2(uv.x * freqDetail * 2.0 + t * speed * 0.3,
+                              uv.y * 0.8 + phaseOff + 5.0));
+
+  fold = fold / 1.75;  // normalize roughly
+
+  // Convert to intensity: only keep positive folds
+  float curtainShape = smoothstep(-0.1, 0.6, fold);
+
+  // Vertical height envelope — Gaussian centered at centerY
+  float envelope = exp(-pow((uv.y - centerY) / spread, 2.0));
+
+  // Fade at very top and very bottom of screen
+  envelope *= smoothstep(0.0, 0.15, uv.y) * smoothstep(1.0, 0.75, uv.y);
+
+  // Vertical waviness — the curtain edge shimmers up/down
+  float yWave = snoise(vec2(uv.x * freqX * 1.5 + t * speed * 0.8,
+                             uv.y * 3.0 + t * 0.1 + phaseOff));
+  envelope *= 0.7 + 0.3 * (yWave * 0.5 + 0.5);
+
+  return curtainShape * envelope;
+}
+
+/* ── Main ─────────────────────────────────────────────────────── */
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_resolution;
+  float t = u_time * 0.08;
+
+  vec3 col = base;
+
+  // Layer 1 — main vivid blue curtain (dominant)
+  float i1 = curtain(uv, t, 2.2, 5.5, 0.0, 0.45, 0.55, 0.30);
+  col += blue * i1 * 0.85;
+
+  // Layer 2 — lavender curtain (mid-layer, slightly offset)
+  float i2 = curtain(uv, t, 1.8, 4.2, 10.0, 0.32, 0.48, 0.28);
+  col += lav * i2 * 0.60;
+
+  // Layer 3 — deep indigo curtain (background depth)
+  float i3 = curtain(uv, t, 3.0, 6.0, 20.0, 0.55, 0.60, 0.35);
+  col += indigo * i3 * 0.70;
+
+  // Layer 4 — soft blush glow near top (subtle)
+  float i4 = curtain(uv, t, 1.5, 3.5, 30.0, 0.25, 0.35, 0.22);
+  col += blush * i4 * 0.30;
+
+  // Glow / bloom: brighten where intensity is high
+  float totalI = i1 + i2 * 0.7 + i3 * 0.5;
+  col += col * totalI * 0.15;
+
+  // Slight color grading: lift shadows toward indigo
+  col = mix(col, col + indigo * 0.06, 1.0 - totalI);
+
+  // Vignette
+  vec2 vc = uv - 0.5;
+  col *= 1.0 - dot(vc, vc) * 0.6;
+
+  // Clamp to prevent over-bright
+  col = min(col, 1.0);
+
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+/* ── WebGL boilerplate ────────────────────────────────────────── */
+function compileShader(type, src){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+const prog = gl.createProgram();
+gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, VS));
+gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, FS));
+gl.linkProgram(prog); gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+const ap = gl.getAttribLocation(prog,'a_pos');
+gl.enableVertexAttribArray(ap);
+gl.vertexAttribPointer(ap, 2, gl.FLOAT, false, 0, 0);
+
+const uTime = gl.getUniformLocation(prog,'u_time');
+const uRes  = gl.getUniformLocation(prog,'u_resolution');
+
+function resize(){
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = window.innerWidth  * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width  = window.innerWidth  + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+window.addEventListener('resize', resize); resize();
+
+(function frame(ts){
+  gl.uniform1f(uTime, ts * 0.001);
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  requestAnimationFrame(frame);
+})(0);
+</script>
+</body>
+</html>

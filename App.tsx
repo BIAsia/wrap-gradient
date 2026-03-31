@@ -7,6 +7,7 @@ import { GradientPreview } from './components/GradientPreview';
 import { CodeOutput } from './components/CodeOutput';
 import { Presets } from './components/Presets';
 import { InfoPanel } from './components/InfoPanel';
+import { ShaderDebugger } from './components/ShaderDebugger';
 import { BezierCurve, ColorStop, InterpolationMode } from './types';
 import { solveCubicBezier, generateAdaptiveSamples } from './utils/bezier';
 import { interpolateColor } from './utils/color';
@@ -28,7 +29,7 @@ const App: React.FC = () => {
   const [interpolationMode, setInterpolationMode] = useState<InterpolationMode>(InterpolationMode.OKLCH);
   const [samples, setSamples] = useState<number>(10); // Default 10 as requested
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [view, setView] = useState<'editor' | 'about'>('editor');
+  const [view, setView] = useState<'editor' | 'about' | 'shader'>('editor');
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -147,6 +148,10 @@ const App: React.FC = () => {
             </div>
           </div>
 
+        </main>
+      ) : view === 'shader' ? (
+        <main className="flex-1 flex flex-col min-h-0 border-t border-border bg-background relative">
+          <ShaderDebugger />
         </main>
       ) : (
         <main className="flex-1 flex flex-col min-h-0 border-t border-border bg-background">
