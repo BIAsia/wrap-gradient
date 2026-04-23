@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { THEME } from '../config/theme';
 
 // ── Shader types ──────────────────────────────────────────────
-type ShaderType = 'liquid' | 'mesh' | 'aurora' | 'noise';
+type ShaderType = 'cushion' | 'liquid' | 'mesh' | 'aurora' | 'noise';
 
 // ── Preset palette data from gradient-shader.md ───────────────
 interface PresetPalette {
@@ -13,6 +13,8 @@ interface PresetPalette {
 }
 
 const SHADER_PRESETS: PresetPalette[] = [
+  // Cushion reference
+  { name: 'Sky Pillow', nameZh: '天枕', family: 'Cushion', colors: ['#E42820', '#F8A8B4', '#F2EDEC', '#CCDFF0', '#1AB2EC'] },
   // RedYellow
   { name: 'Burning Sky', nameZh: '烈空', family: 'RedYellow', colors: ['#C4C4C4','#E48D3E','#DF2512','#1F100D','#000000'] },
   { name: 'Dyed Horizon', nameZh: '霞染', family: 'RedYellow', colors: ['#DDE0EE','#DFC9AD','#F8A4A4','#F1603F','#EF2F6A'] },
@@ -112,7 +114,22 @@ const NOISE_PARAMS: ParamDef[] = [
   { key: 'vignette', label: 'Vignette', min: 0.0, max: 1.0, step: 0.05, defaultValue: 0.4 },
 ];
 
+// CUSHION — Squircle with 3D sphere lighting + flowing shimmer
+const CUSHION_PARAMS: ParamDef[] = [
+  { key: 'timeSpeed',         label: 'Time Speed',       min: 0.01, max: 0.2,  step: 0.005, defaultValue: 0.06  },
+  { key: 'skewAmount',        label: 'Skew Amount',      min: 0.0,  max: 0.18, step: 0.005, defaultValue: 0.055 },
+  { key: 'skewSpeed',         label: 'Skew Speed',       min: 0.05, max: 1.0,  step: 0.05,  defaultValue: 0.28  },
+  { key: 'shimmerIntensity',  label: 'Shimmer Intensity',min: 0.0,  max: 0.5,  step: 0.01,  defaultValue: 0.11  },
+  { key: 'shimmerFalloff',    label: 'Shimmer Width',    min: 3.0,  max: 40.0, step: 0.5,   defaultValue: 22.0  },
+  { key: 'flowSpeed',         label: 'Flow Speed',       min: 0.1,  max: 2.0,  step: 0.05,  defaultValue: 0.48  },
+  { key: 'specIntensity',     label: 'Specular',         min: 0.0,  max: 1.0,  step: 0.02,  defaultValue: 0.22  },
+  { key: 'glowStrength',      label: 'Edge Glow',        min: 0.0,  max: 0.5,  step: 0.01,  defaultValue: 0.14  },
+  { key: 'shapeSize',         label: 'Shape Size',       min: 0.25, max: 0.5,  step: 0.01,  defaultValue: 0.40  },
+  { key: 'noiseWarp',         label: 'Noise Warp',       min: 0.0,  max: 0.08, step: 0.005, defaultValue: 0.025 },
+];
+
 const PARAMS_MAP: Record<ShaderType, ParamDef[]> = {
+  cushion: CUSHION_PARAMS,
   liquid: LIQUID_PARAMS,
   mesh: MESH_PARAMS,
   aurora: AURORA_PARAMS,
@@ -271,6 +288,95 @@ function buildPaletteFromDecls(count: number): string {
 
 function buildFragShader(type: ShaderType, colors: string[], params: Record<string, number>): string {
   const header = `precision highp float;\nuniform float u_time;\nuniform vec2 u_resolution;\n`;
+
+  // ═══════════════════════════════════════════════════════════════
+  // CUSHION — Squircle (n=4 superellipse) with sphere-like 3D depth,
+  //   vertical gradient palette, skew oscillation, and flowing shimmer.
+  // Technique: superellipse SDF → sphere normals from SDF gradient →
+  //   Lambertian + specular lighting → animated shimmer band (流光)
+  // ═══════════════════════════════════════════════════════════════
+  if (type === 'cushion') {
+    return `${header}\n${SIMPLEX_NOISE}\n${buildColorDecls(colors)}\n${buildPaletteFromDecls(colors.length)}\n
+float squircleSDF(vec2 p, float r) {
+  float qx = abs(p.x) / r;
+  float qy = abs(p.y) / r;
+  float q2x = qx * qx;
+  float q2y = qy * qy;
+  return pow(q2x * q2x + q2y * q2y, 0.25) - 1.0;
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_resolution;
+  float aspect = u_resolution.x / u_resolution.y;
+  float t = u_time * ${params.timeSpeed.toFixed(4)};
+
+  // Screen-space centered coords [-0.5, 0.5]
+  vec2 p = uv - 0.5;
+
+  // Subtle skew oscillation: shear x by y
+  float skew = sin(t * ${params.skewSpeed.toFixed(3)}) * ${params.skewAmount.toFixed(4)};
+  p.x += skew * p.y;
+
+  // Squircle (n=4 superellipse) SDF
+  float r = ${params.shapeSize.toFixed(3)};
+  float d = squircleSDF(p, r);
+
+  // Normalized position in shape space [-1..1]
+  vec2 pn = p / r;
+
+  // Gradient: y drives palette (0 = bottom color, 1 = top color)
+  float gradT = pn.y * 0.5 + 0.5;
+
+  // Organic noise perturbation of gradient
+  float noiseV = snoise(pn * 2.5 + vec2(t * 0.08, t * 0.05)) * ${params.noiseWarp.toFixed(4)};
+  gradT = clamp(gradT + noiseV, 0.0, 1.0);
+
+  vec3 col = paletteFn(gradT);
+
+  // 3D cushion: aspect-corrected normals for specular
+  vec2 pA = p * vec2(aspect, 1.0) / r;
+  float nz = sqrt(max(1.0 - dot(pA, pA) * 0.88, 0.001));
+  vec3 nrm = normalize(vec3(pA * 0.88, nz));
+
+  // Edge darkening: thin dark ring only at the very edge of the squircle
+  // -d = 0 at edge, 1 at center; full brightness once we're 20% inside
+  float rimFade = smoothstep(0.0, 0.22, -d);
+  col *= (0.04 + 0.96 * rimFade);
+
+  // Subtle directional bias: top slightly brighter, bottom slightly warmer
+  col *= (1.0 + nrm.y * 0.08);
+
+  // Specular highlight
+  vec3 ldir = normalize(vec3(-0.08, 0.52, 1.0));
+  vec3 halfDir = normalize(ldir + vec3(0.0, 0.0, 1.0));
+  float spec = pow(max(dot(nrm, halfDir), 0.0), 32.0) * ${params.specIntensity.toFixed(3)};
+  col += vec3(1.0, 0.97, 0.94) * spec;
+
+  // Flowing shimmer band (流光): oscillating bright streak
+  float shimPhase = sin(t * ${params.flowSpeed.toFixed(3)}) * 0.32 + cos(t * ${(params.flowSpeed * 0.61).toFixed(3)}) * 0.12;
+  float shimY = pn.y - shimPhase;
+  float shimX = sin(pn.x * 2.8 + t * ${(params.flowSpeed * 0.45).toFixed(3)}) * 0.035;
+  float shimDist = shimY - shimX;
+  float shimmer = exp(-shimDist * shimDist * ${params.shimmerFalloff.toFixed(2)}) * ${params.shimmerIntensity.toFixed(3)};
+  shimmer *= smoothstep(1.0, 0.2, length(pA)); // fade toward edges
+  col += vec3(1.0, 0.96, 0.92) * shimmer;
+
+  // Background: deep dark navy
+  vec3 bg = vec3(0.034, 0.032, 0.068);
+
+  // Soft glow halo beyond squircle edge
+  float glowDist = max(d, 0.0);
+  vec3 edgeCol = paletteFn(gradT);
+  float glow = exp(-glowDist * 7.0) * ${params.glowStrength.toFixed(3)};
+  bg += edgeCol * glow;
+
+  // Composite squircle onto background
+  float mask = smoothstep(0.020, -0.008, d);
+  col = mix(bg, col, mask);
+
+  gl_FragColor = vec4(max(col, 0.0), 1.0);
+}`;
+  }
 
   // ═══════════════════════════════════════════════════════════════
   // LIQUID — SDF metaballs with smooth union blending + glow halos
@@ -576,11 +682,11 @@ export const ShaderDebugger: React.FC = () => {
   const uTimeRef = useRef<WebGLUniformLocation | null>(null);
   const uResRef = useRef<WebGLUniformLocation | null>(null);
 
-  const [shaderType, setShaderType] = useState<ShaderType>('liquid');
-  const [selectedPreset, setSelectedPreset] = useState<number>(16); // Floral
+  const [shaderType, setShaderType] = useState<ShaderType>('cushion');
+  const [selectedPreset, setSelectedPreset] = useState<number>(0); // Sky Pillow
   const [params, setParams] = useState<Record<string, number>>(() => {
     const defs: Record<string, number> = {};
-    LIQUID_PARAMS.forEach(p => { defs[p.key] = p.defaultValue; });
+    CUSHION_PARAMS.forEach(p => { defs[p.key] = p.defaultValue; });
     return defs;
   });
   const [isPaused, setIsPaused] = useState(false);
@@ -701,7 +807,7 @@ ${Object.entries(params).map(([k, v]) => `//   ${k}: ${v}`).join('\n')}`;
       {/* Top bar: type selector + controls */}
       <div className={`flex items-center justify-between px-4 py-2 border-b ${THEME.layout.border} shrink-0`}>
         <div className="flex items-center gap-1">
-          {(['liquid', 'mesh', 'aurora', 'noise'] as ShaderType[]).map(t => (
+          {(['cushion', 'liquid', 'mesh', 'aurora', 'noise'] as ShaderType[]).map(t => (
             <button
               key={t}
               onClick={() => handleTypeChange(t)}
